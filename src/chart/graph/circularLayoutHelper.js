@@ -45,8 +45,8 @@ export function circularLayout(seriesModel) {
         angle += unitAngle * (sum ? value : 1) / 2;
 
         node.setLayout([
-            r * Math.cos(angle) + cx,
-            r * Math.sin(angle) + cy
+            r * Math.sin(angle) + cx,
+            r * Math.cos(angle) + cy
         ]);
 
         angle += unitAngle * (sum ? value : 1) / 2;
