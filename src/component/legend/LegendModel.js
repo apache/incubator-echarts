@@ -44,6 +44,7 @@ var LegendModel = echarts.extendComponentModel({
         this.mergeDefaultAndTheme(option, ecModel);
 
         option.selected = option.selected || {};
+        option.disabled = option.disabled || {};
     },
 
     mergeOption: function (option) {
@@ -169,9 +170,13 @@ var LegendModel = echarts.extendComponentModel({
      */
     toggleSelected: function (name) {
         var selected = this.option.selected;
+        var disabled = this.option.disabled;
         // Default is true
         if (!selected.hasOwnProperty(name)) {
             selected[name] = true;
+        }
+        if (!disabled.hasOwnProperty(name) && disabled[name] === true) {
+            return;
         }
         this[selected[name] ? 'unSelect' : 'select'](name);
     },
