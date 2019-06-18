@@ -58,7 +58,9 @@ under the License.
         <div class="chart" id="plain-v2"></div>
         <h1>Scroll</h1>
         <div class="chart" id="scroll"></div>
-         <h1>Scroll auto: try to change window size (width: 80%, right: 30)</h1>
+        <h1>Scroll two line height</h1>
+        <div class="chart" id="scroll-with-two-line"></div>
+        <h1>Scroll auto: try to change window size (width: 80%, right: 30)</h1>
         <div class="chart" id="scroll-auto"></div>
         <h1>Scroll auto: left: 30, right: 30, bottom: 0, position: 'start'</h1>
         <div class="chart" id="scroll-lr"></div>
@@ -523,6 +525,64 @@ under the License.
 
 
 
+        <script>
+            require([
+                'echarts',
+                // 'echarts/chart/line',
+                // 'echarts/component/title',
+                // 'echarts/component/legendScroll',
+                // 'echarts/component/grid',
+                // 'echarts/component/tooltip',
+                // 'echarts/component/dataZoomInside',
+                // 'zrender/svg/svg'
+            ], function (echarts) {
+
+                var xAxisData = [];
+                var data1 = [];
+                var data2 = [];
+                var data3 = [];
+
+                for (var i = 0; i < 100; i++) {
+                    xAxisData.push('类目' + i);
+                    if (i < 5 && i > 1) {
+                        data1.push(0);
+                    }
+                    else {
+                        data1.push(+(Math.random() + 0.5).toFixed(3));
+                    }
+                    data2.push(+(Math.random() + 0.5).toFixed(3));
+                    data3.push(+(Math.random() + 0.5).toFixed(3));
+                }
+
+                var seriesInfo = makeSeries(50, 3);
+
+                var option = {
+                    legend: {
+                        type: 'scroll',
+                        data: seriesInfo.legendData,
+                        height: 44,
+                        width: 400,
+                        backgroundColor: 'rgba(0,100,50,0.2)'
+                    },
+                    tooltip: {
+                    },
+                    grid: {
+                        left: 280
+                    },
+                    xAxis: {
+                        data: seriesInfo.xAxisData
+                    },
+                    yAxis: {
+                        splitArea: {
+                            show: true
+                        }
+                    },
+                    series: seriesInfo.series
+                };
+
+                testHelper.createChart(echarts, 'scroll-with-two-line', option);
+            })
+        </script>
 
 
 
@@ -593,10 +653,6 @@ under the License.
                 testHelper.createChart(echarts, 'scroll-auto', option, {draggable: true, width: 400});
             })
         </script>
-
-
-
-
 
 
 

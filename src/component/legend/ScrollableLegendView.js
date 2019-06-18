@@ -148,20 +148,21 @@ var ScrollableLegendView = LegendView.extend({
         var hw = WH[1 - orientIdx];
         var yx = XY[1 - orientIdx];
 
-        // Place items in contentGroup.
-        layoutUtil.box(
-            legendModel.get('orient'),
-            contentGroup,
-            legendModel.get('itemGap'),
-            !orientIdx ? null : maxSize.width,
-            orientIdx ? null : maxSize.height
-        );
-
+        // layout controllerGroup first to get correct boundingRect next
         layoutUtil.box(
             // Buttons in controller are layout always horizontally.
             'horizontal',
             controllerGroup,
             legendModel.get('pageButtonItemGap', true)
+        );
+
+        // Place items in contentGroup.
+        layoutUtil.box(
+            legendModel.get('orient'),
+            contentGroup,
+            legendModel.get('itemGap'),
+            !orientIdx ? (maxSize.width - controllerGroup.getBoundingRect().width) : maxSize.width,
+            orientIdx ? (maxSize.height - controllerGroup.getBoundingRect().height) : maxSize.height
         );
 
         var contentRect = contentGroup.getBoundingRect();

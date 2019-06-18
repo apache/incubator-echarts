@@ -44,6 +44,10 @@ export var HV_NAMES = [
 function boxLayout(orient, group, gap, maxWidth, maxHeight) {
     var x = 0;
     var y = 0;
+    // 每一页的起始位置
+    var originx = 0;
+    var originy = 0;
+    var page = 0;
 
     if (maxWidth == null) {
         maxWidth = Infinity;
@@ -64,15 +68,25 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
         if (orient === 'horizontal') {
             var moveX = rect.width + (nextChildRect ? (-nextChildRect.x + rect.x) : 0);
             nextX = x + moveX;
+            nextY = y + currentLineMaxSize + gap;
+            // 每一页的起始位置
+            if (nextY >= maxHeight && nextX > maxWidth * (page + 1)) {
+                page++;
+                y = 0;
+                originx = x;
+            }
             // Wrap when width exceeds maxWidth or meet a `newline` group
             // FIXME compare before adding gap?
-            if (nextX > maxWidth || child.newline) {
-                x = 0;
-                nextX = moveX;
+            // 如果下一个item的x坐标超出了
+            if ((nextX > (maxWidth * (page + 1)) && nextY < maxHeight) || child.newline) {
+                // 判断高度够不够换行
+                x = originx;
+                nextX = originx + moveX;
                 y += currentLineMaxSize + gap;
                 currentLineMaxSize = rect.height;
             }
             else {
+                // 记录这一行的最高的高度
                 // FIXME: consider rect.y is not `0`?
                 currentLineMaxSize = Math.max(currentLineMaxSize, rect.height);
             }
@@ -80,11 +94,17 @@ function boxLayout(orient, group, gap, maxWidth, maxHeight) {
         else {
             var moveY = rect.height + (nextChildRect ? (-nextChildRect.y + rect.y) : 0);
             nextY = y + moveY;
-            // Wrap when width exceeds maxHeight or meet a `newline` group
-            if (nextY > maxHeight || child.newline) {
+            nextX = x + currentLineMaxSize + gap;
+            if (nextX >= maxWidth && nextY > maxHeight * (page + 1)) {
+                page++;
+                x = 0;
+                originy = y;
+            }
+            // Wrap when height exceeds maxHeight or meet a `newline` group
+            if ((nextY > (maxHeight * (page + 1)) && nextX < maxWidth) || child.newline) {
+                y = originy;
+                nextY = originy + moveY;
                 x += currentLineMaxSize + gap;
-                y = 0;
-                nextY = moveY;
                 currentLineMaxSize = rect.width;
             }
             else {
