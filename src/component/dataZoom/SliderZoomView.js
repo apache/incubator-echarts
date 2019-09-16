@@ -269,6 +269,9 @@ var SliderZoomView = DataZoomView.extend({
         var size = this._size;
         var barGroup = this._displayables.barGroup;
 
+        // add mouse wheel zoom event for the entire slider
+        barGroup.onmousewheel =  bind(this._mouseWheelZoom, this);
+
         barGroup.add(new Rect({
             silent: true,
             shape: {
@@ -774,6 +777,52 @@ var SliderZoomView = DataZoomView.extend({
             start: range[0],
             end: range[1]
         });
+    },
+
+    /**
+     * Zoom with the mouse wheel
+     * We simply simulate handle zoom
+     * @private
+     */
+    _mouseWheelZoom: function (e) {
+        const STEP_SIZE = 10;
+
+        // stop wheel navigation so page won't scroll
+        eventTool.stop(e.event);
+
+        // Transform dx, dy to bar coordination.
+        var barTransform = this._displayables.barGroup.getLocalTransform();
+
+        // don't zoom in too much, so sliders won't switch places
+        // and then mouse wheel will invert
+        if (this._range[1] - this._range[0] <= STEP_SIZE) {
+            if (e.wheelDelta > 0) {
+                    return;
+            }
+        }
+
+        for (const handleIndex of [0, 1]) {
+            // calculate zoom transform size according to current slider
+            var handleStepSize = STEP_SIZE * (e.wheelDelta > 0 ? -1 : 1);
+            if (handleIndex == 1) {
+                handleStepSize = handleStepSize * -1;
+            }
+            if (this._orient == "horizontal") {
+                handleStepSize = handleStepSize * -1;
+            }
+
+            // apply zoom transform
+            var vertex = graphic.applyTransform([handleStepSize, handleStepSize], barTransform, true);
+            var changed = this._updateInterval(handleIndex, vertex[0]);
+        }
+
+        var realtime = this.dataZoomModel.get('realtime');
+
+        this._updateView(!realtime);
+
+        // Avoid dispatch dataZoom repeatly but range not changed,
+        // which cause bad visual effect when progressive enabled.
+        changed && realtime && this._dispatchZoomAction();
     },
 
     /**
