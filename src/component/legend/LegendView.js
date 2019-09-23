@@ -178,13 +178,7 @@ export default echarts.extendComponentView({
             // Series legend
             if (seriesModel) {
                 var data = seriesModel.getData();
-                var color = data.getVisual('color');
-
-                // If color is a callback function
-                if (typeof color === 'function') {
-                    // Use the first data
-                    color = color(seriesModel.getDataParams(0));
-                }
+                var color = getLegendColor(data, dataIndex, seriesModel, itemModel, ecModel)
 
                 // Using rect symbol defaultly
                 var legendSymbolType = data.getVisual('legendSymbol') || 'roundRect';
@@ -480,6 +474,28 @@ export default echarts.extendComponentView({
     }
 
 });
+
+function getLegendColor(data, dataIndex, seriesModel, itemModel, ecModel) {
+  var itemColor = itemModel.get('color');
+  var color = data.getVisual('color');
+  var useDataColor = true
+
+  if (itemColor !== ecModel.get('color')) {
+      color = itemColor;
+      useDataColor = false
+  }
+
+  if (zrUtil.isArray(color)) {
+    color = color[useDataColor ? 0 : dataIndex]
+  }
+  
+  // If color is a callback function
+  if (typeof color === 'function') {
+      // Use the first data
+      color = color(seriesModel.getDataParams(0));
+  }
+  return color
+}
 
 function dispatchSelectAction(name, api) {
     api.dispatchAction({
