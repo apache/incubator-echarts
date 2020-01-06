@@ -30,6 +30,10 @@ export default function (ecModel) {
 
         var axes = coordSys.getIndicatorAxes();
 
+        // when axes === [] && data !== [], points[idx] will be undefined
+        if (!axes.length) {
+            return;
+        }
         zrUtil.each(axes, function (axis, axisIndex) {
             data.each(data.mapDimension(axes[axisIndex].dim), function (val, dataIndex) {
                 points[dataIndex] = points[dataIndex] || [];

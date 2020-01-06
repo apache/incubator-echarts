@@ -23,6 +23,9 @@ under the License.
         <meta charset="utf-8">
         <script src="lib/esl.js"></script>
         <script src="lib/config.js"></script>
+        <script src="lib/testHelper.js"></script>
+        <link rel="stylesheet" href="lib/reset.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
         <style>
@@ -32,6 +35,7 @@ under the License.
             }
         </style>
         <div id="main"></div>
+        <div id="main1"></div>
         <script>
 
             require([
@@ -95,8 +99,62 @@ under the License.
                 });
 
                 chart.on('click', function (params) {
-                    console.log(params)
-                })
+                    console.log(params);
+                });
+
+                var option1 = {
+                    aria: {
+                        show: true
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）含有 "-" 数据', '第一个元素是 null']
+                    },
+                    radar: {
+                        radius: [50, '70%'],
+                        name: {
+                            formatter:'【{value}】',
+                            color:'#72ACD1'
+                        },
+                        triggerEvent: true,
+                        // shape: 'circle',
+                        indicator: []
+                    },
+                    series: [{
+                        name: '预算 vs 开销（Budget vs spending）',
+                        type: 'radar',
+                        label: {
+                            normal: {
+                                show: true
+                            }
+                        },
+                        // areaStyle: {normal: {}},
+                        data : [
+                            {
+                                value : [0, 10000, 28000, 35000, 50000, 19000],
+                                name : '预算分配（Allocated Budget）'
+                            },
+                             {
+                                value : [50, 14000, 28000, 31000, '-', 21000],
+                                name : '实际开销（Actual Spending）含有 "-" 数据'
+                            },
+                            {
+                                value: ['-', 8000, 20000, 20000, 40000, 10000],
+                                name: '第一个元素是 null'
+                            }
+                        ]
+                    }]
+                };
+
+                testHelper.create(echarts, 'main1', {
+                title: [
+                    'only show the legend',
+                    'the error message「Cannot read property push of undefined」should not be showed in console when the indicator is an empty array'
+                ],
+                option: option1,
+                height: 300
+            });
+
             });
 
         </script>
