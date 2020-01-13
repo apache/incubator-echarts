@@ -85,9 +85,7 @@ function layoutSankey(nodes, edges, nodeWidth, nodeGap, width, height, iteration
  */
 function computeNodeValues(nodes) {
     zrUtil.each(nodes, function (node) {
-        var value1 = sum(node.outEdges, getEdgeValue);
-        var value2 = sum(node.inEdges, getEdgeValue);
-        var value = Math.max(value1, value2);
+        var value = node.getValue();
         node.setLayout({value: value}, true);
     });
 }
