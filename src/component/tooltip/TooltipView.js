@@ -54,8 +54,15 @@ export default echarts.extendComponentView({
         var renderMode = tooltipModel.get('renderMode');
         this._renderMode = getTooltipRenderMode(renderMode);
 
+        var renderer = tooltipModel.get('renderer');
         var tooltipContent;
-        if (this._renderMode === 'html') {
+        if (renderer) {
+            tooltipContent = new renderer({
+                appendToBody: tooltipModel.get('appendToBody', true)
+            });
+            this._newLine = renderer.newLine;
+        }
+        else if (this._renderMode === 'html') {
             tooltipContent = new TooltipContent(api.getDom(), api, {
                 appendToBody: tooltipModel.get('appendToBody', true)
             });
