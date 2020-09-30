@@ -162,11 +162,12 @@ export function mappingToExists(exists, newCptOptions) {
             var exist = result[i].exist;
             if (!result[i].option // Consider name: two map to one.
                 // Can not match when both ids exist but different.
-                && (exist.id == null || cptOption.id == null)
-                && cptOption.name != null
+                && ((exist && exist.id == null) || (cpOption && cptOption.id == null))
+                && (cptOption && cptOption.name != null)
                 && !isIdInner(cptOption)
                 && !isIdInner(exist)
-                && exist.name === cptOption.name + ''
+                && exist && cptOption
+                &&  exist.name === cptOption.name + ''
             ) {
                 result[i].option = cptOption;
                 newCptOptions[index] = null;
