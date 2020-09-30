@@ -324,6 +324,15 @@ var SeriesModel = ComponentModel.extend({
         var markers = {};
         var markerId = 0;
 
+        function convertValue(val, dimType) {
+            // FIXME should not format time for raw data?
+            return dimType === 'ordinal'
+                ? val + ''
+                : dimType === 'time'
+                ? (multipleSeries ? '' : formatTime('yyyy/MM/dd hh:mm:ss', val))
+                : addCommas(val);
+        }
+
         function formatArrayValue(value) {
             // ??? TODO refactor these logic.
             // check: category-no-encode-has-axis-data in dataset.html
@@ -361,13 +370,7 @@ var SeriesModel = ComponentModel.extend({
                         ? dimHeadStr + encodeHTML(dimInfo.displayName || '-') + ': '
                         : ''
                     )
-                    // FIXME should not format time for raw data?
-                    + encodeHTML(dimType === 'ordinal'
-                        ? val + ''
-                        : dimType === 'time'
-                        ? (multipleSeries ? '' : formatTime('yyyy/MM/dd hh:mm:ss', val))
-                        : addCommas(val)
-                    );
+                    + encodeHTML(convertValue(val, dimType));
                 valStr && result.push(valStr);
 
                 if (isRichText) {
@@ -381,6 +384,21 @@ var SeriesModel = ComponentModel.extend({
             return {
                 renderMode: renderMode,
                 content: content,
+                style: markers
+            };
+        }
+
+        function formatSingleDimValue(val) {
+            var dimInfo = data.getDimensionInfo(tooltipDims[0]);
+            // If `dimInfo.tooltip` is not set, show tooltip.
+            if (!dimInfo || dimInfo.otherDims.tooltip === false) {
+                return;
+            }
+            var dimType = dimInfo.type;
+
+            return {
+                renderMode: renderMode,
+                content: encodeHTML(convertValue(val, dimType)),
                 style: markers
             };
         }
@@ -410,7 +428,7 @@ var SeriesModel = ComponentModel.extend({
         var formattedValue = (tooltipDimLen > 1 || (isValueArr && !tooltipDimLen))
             ? formatArrayValue(value)
             : tooltipDimLen
-            ? formatSingleValue(retrieveRawValue(data, dataIndex, tooltipDims[0]))
+            ? formatSingleDimValue(retrieveRawValue(data, dataIndex, tooltipDims[0]))
             : formatSingleValue(isValueArr ? value[0] : value);
         var content = formattedValue.content;
 

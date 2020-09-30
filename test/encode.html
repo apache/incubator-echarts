@@ -47,7 +47,7 @@ under the License.
         <div class="chart" id="dim"></div>
         <h1>change tooltip order (Tooltip of the first series should be: median, 1分位, Q3)</h1>
         <div class="chart" id="order"></div>
-        <h1>define which dim on x or y. encode: {x: 2, y: 1, label: 4}</h1>
+        <h1>define which dim on x or y. encode: {x: 2, y: 1, label: 4, tooltip: 0}</h1>
         <div class="chart" id="dimXY"></div>
 
         <div class="chart" id="ignoreX"></div>
@@ -352,7 +352,8 @@ under the License.
                         encode: {
                             x: 2,
                             y: 1,
-                            label: 4
+                            label: 4,
+                            tooltip: 0
                         },
                         itemStyle: {
                             normal: {
