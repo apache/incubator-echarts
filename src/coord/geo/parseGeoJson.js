@@ -107,7 +107,14 @@ export default function (geoJson, nameProperty) {
         // Output of mapshaper may have geometry null
         return featureObj.geometry
             && featureObj.properties
-            && featureObj.geometry.coordinates.length > 0;
+            && (
+                // avoid length error if missing coordinates
+                (featureObj.geometry.coordinates && featureObj.geometry.coordinates.length > 0)
+                // allow GeometryCollection
+                || (featureObj.geometry.geometries && featureObj.geometry.geometries.length > 0)
+            )
+            ;
+        
     }), function (featureObj) {
         var properties = featureObj.properties;
         var geo = featureObj.geometry;
@@ -124,7 +131,7 @@ export default function (geoJson, nameProperty) {
                 interiors: coordinates.slice(1)
             });
         }
-        if (geo.type === 'MultiPolygon') {
+        else if (geo.type === 'MultiPolygon') {
             zrUtil.each(coordinates, function (item) {
                 if (item[0]) {
                     geometries.push({
@@ -133,6 +140,19 @@ export default function (geoJson, nameProperty) {
                         interiors: item.slice(1)
                     });
                 }
+            });
+        }
+        else if (geo.type === 'GeometryCollection') {
+            var geometries2 = geo.geometries;
+            each$1(geometries2, function (geo) { // OR      zrUtil.each(geometries2, function (geo) {
+                var coordinates = geo.coordinates;
+                if (geo.type === 'Polygon') { // this is a full copy from above
+                    geometries.push({
+                        type: 'polygon',
+                        exterior: coordinates[0],
+                        interiors: coordinates.slice(1)
+                    });
+                } // end full copy
             });
         }
 
