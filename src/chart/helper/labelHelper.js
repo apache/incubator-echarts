@@ -25,7 +25,8 @@ import {retrieveRawValue} from '../../data/helper/dataProvider';
  * @return {string} label string. Not null/undefined
  */
 export function getDefaultLabel(data, dataIndex) {
-    var labelDims = data.mapDimension('defaultedLabel', true);
+    var dataDimsLen = data.dimensions.length;
+    var labelDims = data.mapDimension(dataDimsLen > 2 ? data.dimensions[dataDimsLen - 1] : 'defaultedLabel', true);
     var len = labelDims.length;
 
     // Simple optimization (in lots of cases, label dims length is 1)

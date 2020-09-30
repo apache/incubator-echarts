@@ -395,7 +395,8 @@ var SeriesModel = ComponentModel.extend({
         }
 
         var data = this.getData();
-        var tooltipDims = data.mapDimension('defaultedTooltip', true);
+        var dataDimsLen = data.dimensions.length;
+        var tooltipDims = data.mapDimension(dataDimsLen > 2 ? data.dimensions[dataDimsLen - 1] : 'defaultedTooltip', true);
         var tooltipDimLen = tooltipDims.length;
         var value = this.getRawValue(dataIndex);
         var isValueArr = zrUtil.isArray(value);
