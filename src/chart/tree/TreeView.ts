@@ -529,6 +529,7 @@ function drawEdge(
     const edgeForkPosition = seriesModel.get('edgeForkPosition');
     const lineStyle = itemModel.getModel('lineStyle').getLineStyle();
     let edge = symbolEl.__edge;
+
     if (edgeShape === 'curve') {
         if (node.parentNode && node.parentNode !== virtualRoot) {
             if (!edge) {
@@ -576,7 +577,6 @@ function drawEdge(
             }
         }
     }
-
     if (edge) {
         edge.useStyle(zrUtil.defaults({
             strokeNoScale: true, fill: null
@@ -619,13 +619,22 @@ function removeNode(
     const sourceSymbolEl = data.getItemGraphicEl(source.dataIndex) as TreeSymbol;
     const sourceEdge = sourceSymbolEl.__edge;
 
+    // count the deleted child node, #12706
+    const symbolElEcData = getECData(symbolEl);
+    if (source.isExpand === true && source.children) {
+        source.children.forEach(t => {
+            if (t.dataIndex === symbolElEcData.dataIndex) {
+                source.removeNodeCnt += 1
+            }
+        });
+    }
+
     // 1. when expand the sub tree, delete the children node should delete the edge of
     // the source at the same time. because the polyline edge shape is only owned by the source.
-    // 2.when the node is the only children of the source, delete the node should delete the edge of
+    // 2.when delete all children of the source, should delete the edge of
     // the source at the same time. the same reason as above.
     const edge = symbolEl.__edge
-        || ((source.isExpand === false || source.children.length === 1) ? sourceEdge : undefined);
-
+        || ((source.removeNodeCnt === source.children.length || source.isExpand === false) ? sourceEdge : undefined);
     const edgeShape = seriesModel.get('edgeShape');
     const layoutOpt = seriesModel.get('layout');
     const orient = seriesModel.get('orient');
@@ -641,9 +650,6 @@ function removeNode(
                     sourceLayout,
                     sourceLayout
                 ),
-                style: {
-                    opacity: 0
-                }
             }, seriesModel, function () {
                 group.remove(edge);
             });
@@ -654,13 +660,12 @@ function removeNode(
                     parentPoint: [sourceLayout.x, sourceLayout.y],
                     childPoints: [[sourceLayout.x, sourceLayout.y]]
                 },
-                style: {
-                    opacity: 0
-                }
             }, seriesModel, function () {
                 group.remove(edge);
             });
         }
+        // clean removeNodeCnt
+        source.removeNodeCnt = 0;
     }
 }
 

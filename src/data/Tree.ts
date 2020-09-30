@@ -67,6 +67,8 @@ export class TreeNode {
 
     isExpand: boolean = false;
 
+    removeNodeCnt: number = 0;
+
     readonly hostTree: Tree<Model, any, any>; // TODO: TYPE TreeNode use generic?
 
     constructor(name: string, hostTree: Tree<Model, any, any>) {
