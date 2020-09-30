@@ -503,8 +503,8 @@ function setAxisModel(axisProxy, isRestore) {
     var useOrigin = isRestore || (percentWindow[0] === 0 && percentWindow[1] === 100);
 
     axisModel.setRange(
-        useOrigin ? null : +valueWindow[0].toFixed(precision),
-        useOrigin ? null : +valueWindow[1].toFixed(precision)
+        (useOrigin || valueWindow[0] === null) ? null : +valueWindow[0].toFixed(precision),
+        (useOrigin || valueWindow[1] === null) ? null : +valueWindow[1].toFixed(precision)
     );
 }
 
