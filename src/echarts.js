@@ -1808,7 +1808,13 @@ function updateZ(model, view) {
     // Set z and zlevel
     view.group.traverse(function (el) {
         if (el.type !== 'group') {
-            z != null && (el.z = z);
+            var elZ = z;
+            if (isFunction(z)) {
+                var dataModel = el.dataModel || model.ecModel.getSeriesByIndex(el.seriesIndex);
+                var params = dataModel && dataModel.getDataParams(el.dataIndex, el.dataType, el) || {};
+                elZ = z(params);
+            }
+            elZ != null && (el.z = elZ);
             zlevel != null && (el.zlevel = zlevel);
         }
     });
