@@ -32,7 +32,7 @@ export default MarkerModel.extend({
 
         //symbolRotate: 0,
 
-        precision: 2,
+        // precision: 2,
         tooltip: {
             trigger: 'item'
         },

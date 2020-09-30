@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/facePrint.js"></script>
+    <script src="lib/testHelper.js"></script>
+    <!-- <script src="ut/lib/canteen.js"></script> -->
+    <link rel="stylesheet" href="lib/reset.css" />
+</head>
+
+<body>
+    <style>
+    </style>
+
+
+
+    <div id="main0"></div>
+    <div id="main1"></div>
+
+
+
+
+
+
+
+
+    <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option0;
+            var option1;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option0 = {
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        type: 'line',
+                        data: [.012345, -.0234, .0257, .084678, .038245, .002578, 0.0546],
+                        markLine: {
+                            data: [
+                                {
+                                    type: 'max'
+                                },
+                                {
+                                    type: 'min'
+                                },
+                                {
+                                    type: 'average'
+                                },
+                                {
+                                    type: 'median'
+                                },
+                                {
+                                    xAxis: '周二'
+                                },
+                                {
+                                    yAxis: 0.01234567
+                                }
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            var chart0 = testHelper.create(echarts, 'main0', {
+                title: [
+                    'Configuration without precision',
+                    'The precision of average is 2',
+                    'The precision of other type is the precision of value'
+                ],
+                option: option0
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+
+            option1 = {
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        type: 'line',
+                        data: [.01238, -.02323, .02299, .08, .03152, .00212, 0.0386],
+                        markLine: {
+                            data: [
+                                {
+                                    type: 'max'
+                                },
+                                {
+                                    type: 'min'
+                                },
+                                {
+                                    type: 'average'
+                                },
+                                {
+                                    type: 'median'
+                                },
+                                {
+                                    xAxis: '周二'
+                                },
+                                {
+                                    yAxis: 0.01234567
+                                }
+                            ],
+                            precision: 3
+                        }
+                    }
+                ]
+            };
+
+            var chart1 = testHelper.create(echarts, 'main1', {
+                title: [
+                    'Precision of configuration is 3',
+                    'The precision of max is 2, because the value is 0.08',
+                    'The precision of other type is 3'
+                ],
+                option: option1
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

@@ -67,8 +67,11 @@ var markLineTransform = function (seriesModel, coordSys, mlModel, item) {
         mlTo.coord[baseIndex] = Infinity;
 
         var precision = mlModel.get('precision');
-        if (precision >= 0 && typeof value === 'number') {
+        if (precision && precision >= 0 && typeof value === 'number') {
             value = +value.toFixed(Math.min(precision, 20));
+        }
+        if (precision == null && mlType === 'average') {
+            value = +value.toFixed(2);
         }
 
         mlFrom.coord[valueIndex] = mlTo.coord[valueIndex] = value;
