@@ -492,7 +492,7 @@ function setAxisModel(axisProxy, isRestore) {
     var percentWindow = axisProxy._percentWindow;
     var valueWindow = axisProxy._valueWindow;
 
-    if (!percentWindow) {
+    if (!percentWindow || valueWindow[0] === null || valueWindow[1] === null) {
         return;
     }
 
