@@ -17,7 +17,7 @@
 * under the License.
 */
 
-import {each, map} from 'zrender/src/core/util';
+import {each, map, isFunction} from 'zrender/src/core/util';
 import {linearMap, getPixelPrecision, round} from '../util/number';
 import {
     createAxisTicks,
@@ -188,6 +188,7 @@ Axis.prototype = {
         var tickModel = opt.tickModel || this.getTickModel();
         var result = createAxisTicks(this, tickModel);
         var ticks = result.ticks;
+        var interval = result.optionTickInterval;
 
         var ticksCoords = map(ticks, function (tickValue) {
             return {
@@ -199,7 +200,7 @@ Axis.prototype = {
         var alignWithLabel = tickModel.get('alignWithLabel');
 
         fixOnBandTicksCoords(
-            this, ticksCoords, alignWithLabel, opt.clamp
+            this, ticksCoords, alignWithLabel, opt.clamp, interval
         );
 
         return ticksCoords;
@@ -319,7 +320,7 @@ function fixExtentWithBands(extent, nTick) {
 // splitLine/spliteArea should layout appropriately corresponding
 // to displayed labels. (So we should not use `getBandWidth` in this
 // case).
-function fixOnBandTicksCoords(axis, ticksCoords, alignWithLabel, clamp) {
+function fixOnBandTicksCoords(axis, ticksCoords, alignWithLabel, clamp, interval) {
     var ticksLen = ticksCoords.length;
 
     if (!axis.onBand || alignWithLabel || !ticksLen) {
@@ -327,26 +328,27 @@ function fixOnBandTicksCoords(axis, ticksCoords, alignWithLabel, clamp) {
     }
 
     var axisExtent = axis.getExtent();
+    var dataExtent = axis.scale.getExtent();
     var last;
-    var diffSize;
-    if (ticksLen === 1) {
-        ticksCoords[0].coord = axisExtent[0];
-        last = ticksCoords[1] = {coord: axisExtent[0]};
+
+    // distance between two scales
+    var shift = axisExtent[1] / ((dataExtent[1] - dataExtent[0]) + 1);
+
+    each(ticksCoords, function (ticksItem) {
+        ticksItem.coord -= shift / 2;
+    });
+
+    if (!isFunction(interval)) {
+        if (interval === 'auto') {
+            last = {coord: ticksCoords[ticksLen - 1].coord + shift};
+        }
+        else {
+            last = {coord: ticksCoords[ticksLen - 1].coord + shift * (+interval + 1)};
+        }
+        ticksCoords.push(last);
     }
     else {
-        var crossLen = ticksCoords[ticksLen - 1].tickValue - ticksCoords[0].tickValue;
-        var shift = (ticksCoords[ticksLen - 1].coord - ticksCoords[0].coord) / crossLen;
-
-        each(ticksCoords, function (ticksItem) {
-            ticksItem.coord -= shift / 2;
-        });
-
-        var dataExtent = axis.scale.getExtent();
-        diffSize = 1 + dataExtent[1] - ticksCoords[ticksLen - 1].tickValue;
-
-        last = {coord: ticksCoords[ticksLen - 1].coord + shift * diffSize};
-
-        ticksCoords.push(last);
+        last = ticksCoords[ticksLen - 1];
     }
 
     var inverse = axisExtent[0] > axisExtent[1];

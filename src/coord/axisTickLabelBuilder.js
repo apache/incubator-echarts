@@ -135,7 +135,7 @@ function makeCategoryTicks(axis, tickModel) {
 
     // Cache to avoid calling interval function repeatly.
     return listCacheSet(ticksCache, optionTickInterval, {
-        ticks: ticks, tickCategoryInterval: tickCategoryInterval
+        ticks: ticks, tickCategoryInterval: tickCategoryInterval, optionTickInterval: optionTickInterval
     });
 }
 

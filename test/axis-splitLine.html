@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/facePrint.js"></script>
+    <script src="lib/testHelper.js"></script>
+    <script src="lib/draggable.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="lib/reset.css">
+</head>
+
+<body>
+    <style>
+        h1 {
+            line-height: 60px;
+            height: 60px;
+            background: #a60;
+            text-align: center;
+            font-weight: bold;
+            color: #eee;
+            font-size: 14px;
+        }
+
+        .chart {
+            height: 500px;
+        }
+    </style>
+
+    <div class="chart" id="main0"></div>
+    <div class="chart" id="main1"></div>
+    <div class="chart" id="main2"></div>
+    <div class="chart" id="main3"></div>
+    <div class="chart" id="main4"></div>
+    <div class="chart" id="main5"></div>
+    <div class="chart" id="main6"></div>
+    <div class="chart" id="main7"></div>
+    <div class="chart" id="main8"></div>
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: (index) => {
+                                return index === 1 || index === 5 || index === 10
+                            }
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main0', {
+                title: [
+                    'When the interval option is a function, the number and location of the splitLine',
+                    'should match the array that the interval returns. (issue: #12293)'
+                ],
+                option: option,
+                info: {
+                    xAxis: option.xAxis
+                }
+            });
+        });
+
+    </script>
+
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 'auto'
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main1', {
+                title: 'When the interval option is "auto".',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 0
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main2', {
+                title: 'When the interval option is 0.',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 1
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main3', {
+                title: 'When the interval option is 1.',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 2
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main4', {
+                title: 'When the interval option is 2.',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 3
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main5', {
+                title: 'When the interval option is 3.',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 4
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main6', {
+                title: [
+                    'When the interval option is 4.',
+                    'Notice the last splitLine is spaced less than 4 from the end of the axis,',
+                    'so the splitLine at the end of the axis should not be displayed.'
+                ],
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 5
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main7', {
+                title: 'When the interval option is 5.',
+                option: option
+            });
+        });
+
+    </script>
+
+
+    <script>
+
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true,
+                    show: false,
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ["1901",
+                        "1902",
+                        "1903",
+                        "1904",
+                        "1905",
+                        "1906",
+                        "1907",
+                        "1908",
+                        "1909",
+                        "1910",
+                        "1911",
+                        "1912"],
+                        splitLine: {
+                            show: true,
+                            interval: 6
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+
+                    }],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: {
+                            show: false,
+
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '直接访问',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [10, 52, 200, 334, 390, 330, 220,200, 334, 390, 330, 220]
+                    }
+                ]
+            };
+
+            testHelper.create(echarts, 'main8', {
+                title: [
+                    'When the interval option is 6.',
+                    'Notice the last splitLine is spaced less than 6 from the end of the axis,',
+                    'so the splitLine at the end of the axis should not be displayed.'
+                ],
+                option: option
+            });
+        });
+
+    </script>
+
+
+</body>
+
+</html>
