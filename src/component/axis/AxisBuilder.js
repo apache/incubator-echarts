@@ -269,6 +269,7 @@ var builders = {
         var nameLocation = axisModel.get('nameLocation');
         var nameDirection = opt.nameDirection;
         var textStyleModel = axisModel.getModel('nameTextStyle');
+        var nameAlignment = textStyleModel.get('align') || 'center';
         var gap = axisModel.get('nameGap') || 0;
 
         var extent = this.axisModel.axis.getExtent();
@@ -296,12 +297,13 @@ var builders = {
             labelLayout = innerTextLayout(
                 opt.rotation,
                 nameRotation != null ? nameRotation : opt.rotation, // Adapt to axis.
-                nameDirection
+                nameDirection,
+                nameAlignment
             );
         }
         else {
             labelLayout = endTextLayout(
-                opt, nameLocation, nameRotation || 0, extent
+                opt, nameLocation, nameRotation || 0, extent, nameAlignment
             );
 
             axisNameAvailableWidth = opt.axisNameAvailableWidth;
@@ -411,18 +413,19 @@ var makeAxisEventDataBase = AxisBuilder.makeAxisEventDataBase = function (axisMo
  *  textVerticalAlign
  * }
  */
-var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, textRotation, direction) {
+var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, textRotation, direction, textAlignment) {
     var rotationDiff = remRadian(textRotation - axisRotation);
     var textAlign;
     var textVerticalAlign;
+    var fromOptionsTextAlign = textAlignment || 'center';
 
     if (isRadianAroundZero(rotationDiff)) { // Label is parallel with axis line.
         textVerticalAlign = direction > 0 ? 'top' : 'bottom';
-        textAlign = 'center';
+        textAlign = fromOptionsTextAlign;
     }
     else if (isRadianAroundZero(rotationDiff - PI)) { // Label is inverse parallel with axis line.
         textVerticalAlign = direction > 0 ? 'bottom' : 'top';
-        textAlign = 'center';
+        textAlign = fromOptionsTextAlign;
     }
     else {
         textVerticalAlign = 'middle';
@@ -442,21 +445,22 @@ var innerTextLayout = AxisBuilder.innerTextLayout = function (axisRotation, text
     };
 };
 
-function endTextLayout(opt, textPosition, textRotate, extent) {
+function endTextLayout(opt, textPosition, textRotate, extent, textAlignment) {
     var rotationDiff = remRadian(textRotate - opt.rotation);
     var textAlign;
     var textVerticalAlign;
+    var fromOptionsTextAlign = textAlignment || 'center';
     var inverse = extent[0] > extent[1];
     var onLeft = (textPosition === 'start' && !inverse)
         || (textPosition !== 'start' && inverse);
 
     if (isRadianAroundZero(rotationDiff - PI / 2)) {
         textVerticalAlign = onLeft ? 'bottom' : 'top';
-        textAlign = 'center';
+        textAlign = fromOptionsTextAlign;
     }
     else if (isRadianAroundZero(rotationDiff - PI * 1.5)) {
         textVerticalAlign = onLeft ? 'top' : 'bottom';
-        textAlign = 'center';
+        textAlign = fromOptionsTextAlign;
     }
     else {
         textVerticalAlign = 'middle';

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/facePrint.js"></script>
+    <script src="lib/testHelper.js"></script>
+    <link rel="stylesheet" href="lib/reset.css" />
+</head>
+
+<body>
+    <style>
+        .test-title {
+            background: #146402;
+            color: #fff;
+        }
+    </style>
+
+
+    <div id="main10"></div>
+    <div id="main11"></div>
+    <div id="main12"></div>
+
+    <div id="main20"></div>
+    <div id="main21"></div>
+    <div id="main22"></div>
+
+    <div id="main30"></div>
+    <div id="main31"></div>
+    <div id="main32"></div>
+
+
+
+    <script>
+
+        var chart;
+        var myChart;
+        var option;
+
+        require([
+            'echarts'/*, 'map/js/china' */
+        ], function (echarts) {
+
+
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                legend: {
+                    data: ['蒸发量', '降水量', '平均温度']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        name: 'Also a long axis name for X',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'start'
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'This is a very long axis name for the Y',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'start',
+                        min: 0,
+                        max: 250,
+                        interval: 50,
+                        axisLabel: {
+                            formatter: '{value} ml'
+                        },
+
+                    },
+                    {
+                        type: 'value',
+                        name: 'This is a another very long axis name for the second Y',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'start',
+                        min: 0,
+                        max: 25,
+                        interval: 5,
+                        axisLabel: {
+                            formatter: '{value} °C'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '蒸发量',
+                        type: 'bar',
+                        data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                    },
+                    {
+                        name: '降水量',
+                        type: 'bar',
+                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                    },
+                    {
+                        name: '平均温度',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                    }
+                ]
+            };
+
+            chart = myChart = testHelper.create(echarts, 'main10', {
+                option: option,
+                title: 'Align: left, location: start'
+            });
+        });
+
+    </script>
+
+<script>
+
+    var chart;
+    var myChart;
+    var option;
+
+    require([
+        'echarts'/*, 'map/js/china' */
+    ], function (echarts) {
+
+
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: ['蒸发量', '降水量', '平均温度']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'left'
+                    },
+                    nameLocation: 'center'
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'left'
+                    },
+                    nameLocation: 'center',
+                    min: 0,
+                    max: 250,
+                    interval: 50,
+                    axisLabel: {
+                        formatter: '{value} ml'
+                    },
+
+                },
+                {
+                    type: 'value',
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'left'
+                    },
+                    nameLocation: 'center',
+                    min: 0,
+                    max: 25,
+                    interval: 5,
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '蒸发量',
+                    type: 'bar',
+                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                },
+                {
+                    name: '降水量',
+                    type: 'bar',
+                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                },
+                {
+                    name: '平均温度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                }
+            ]
+        };
+
+        chart = myChart = testHelper.create(echarts, 'main11', {
+            option: option,
+            title: 'Align: left, location: center'
+        });
+    });
+
+</script>
+
+    <script>
+
+        var chart;
+        var myChart;
+        var option;
+
+        require([
+            'echarts'/*, 'map/js/china' */
+        ], function (echarts) {
+
+
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                legend: {
+                    data: ['蒸发量', '降水量', '平均温度']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        name: 'Also a long axis name for X',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'end'
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'This is a very long axis name for the Y',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'end',
+                        min: 0,
+                        max: 250,
+                        interval: 50,
+                        axisLabel: {
+                            formatter: '{value} ml'
+                        },
+
+                    },
+                    {
+                        type: 'value',
+                        name: 'This is a another very long axis name for the second Y',
+                        nameTextStyle: {
+                            align: 'left'
+                        },
+                        nameLocation: 'end',
+                        min: 0,
+                        max: 25,
+                        interval: 5,
+                        axisLabel: {
+                            formatter: '{value} °C'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '蒸发量',
+                        type: 'bar',
+                        data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                    },
+                    {
+                        name: '降水量',
+                        type: 'bar',
+                        data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                    },
+                    {
+                        name: '平均温度',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                    }
+                ]
+            };
+
+            chart = myChart = testHelper.create(echarts, 'main12', {
+                option: option,
+                title: 'Align: left, location: end'
+            });
+        });
+
+    </script>
+
+
+
+
+
+
+    <script>
+
+        var chart;
+        var myChart;
+        var option;
+
+        require([
+            'echarts'/*, 'map/js/china' */
+        ], function (echarts) {
+
+            var data = [[10, 16, 3, 'A'], [16, 18, 15, 'B'], [18, 26, 12, 'C'], [26, 32, 22, 'D'], [32, 56, 7, 'E'], [56, 62, 17, 'F']];
+            var colorList = ['#4f81bd', '#c0504d', '#9bbb59', '#604a7b', '#948a54', '#e46c0b'];
+            data = echarts.util.map(data, function (item, index) {
+                return {
+                    value: item,
+                    itemStyle: {
+                        normal: {
+                            color: colorList[index]
+                        }
+                    }
+                };
+            });
+
+            function renderItem(params, api) {
+                var yValue = api.value(2);
+                var start = api.coord([api.value(0), yValue]);
+                var size = api.size([api.value(1) - api.value(0), yValue]);
+                var style = api.style();
+                return {
+                    type: 'rect',
+                    shape: {
+                        x: start[0],
+                        y: start[1],
+                        width: size[0],
+                        height: size[1]
+                    },
+                    style: style
+                };
+            }
+
+            var option = {
+                title: {
+                    text: 'Profit',
+                    left: 'center'
+                },
+                tooltip: {
+                },
+                xAxis: {
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'start'
+                },
+                yAxis: [{
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'start',
+                }, {
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'start',
+                }],
+
+                series: [{
+                    type: 'scatter',
+                    data: [[12, 33], [33, 55]]
+                }, {
+                    type: 'scatter',
+                    yAxisIndex: 1,
+                    data: [[123, 233], [133, 255]]
+                }]
+            };
+
+            chart = myChart = testHelper.create(echarts, 'main20', {
+                title: 'Align: right, location: start',
+                option: option
+            });
+        });
+
+    </script>
+
+<script>
+
+    var chart;
+    var myChart;
+    var option;
+
+    require([
+        'echarts'/*, 'map/js/china' */
+    ], function (echarts) {
+
+        var data = [[10, 16, 3, 'A'], [16, 18, 15, 'B'], [18, 26, 12, 'C'], [26, 32, 22, 'D'], [32, 56, 7, 'E'], [56, 62, 17, 'F']];
+        var colorList = ['#4f81bd', '#c0504d', '#9bbb59', '#604a7b', '#948a54', '#e46c0b'];
+        data = echarts.util.map(data, function (item, index) {
+            return {
+                value: item,
+                itemStyle: {
+                    normal: {
+                        color: colorList[index]
+                    }
+                }
+            };
+        });
+
+        function renderItem(params, api) {
+            var yValue = api.value(2);
+            var start = api.coord([api.value(0), yValue]);
+            var size = api.size([api.value(1) - api.value(0), yValue]);
+            var style = api.style();
+            return {
+                type: 'rect',
+                shape: {
+                    x: start[0],
+                    y: start[1],
+                    width: size[0],
+                    height: size[1]
+                },
+                style: style
+            };
+        }
+
+        var option = {
+            title: {
+                text: 'Profit',
+                left: 'center'
+            },
+            tooltip: {
+            },
+            xAxis: {
+                name: 'Also a long axis name for X',
+                nameTextStyle: {
+                    align: 'right'
+                },
+                nameLocation: 'center'
+            },
+            yAxis: [{
+                name: 'This is a very long axis name for the Y',
+                nameTextStyle: {
+                    align: 'right'
+                },
+                nameLocation: 'center',
+            }, {
+                name: 'This is a another very long axis name for the second Y',
+                nameTextStyle: {
+                    align: 'right'
+                },
+                nameLocation: 'center',
+            }],
+
+            series: [{
+                type: 'scatter',
+                data: [[12, 33], [33, 55]]
+            }, {
+                type: 'scatter',
+                yAxisIndex: 1,
+                data: [[123, 233], [133, 255]]
+            }]
+        };
+
+        chart = myChart = testHelper.create(echarts, 'main21', {
+            title: 'Align: right, location: center',
+            option: option
+        });
+    });
+
+</script>
+
+    <script>
+
+        var chart;
+        var myChart;
+        var option;
+
+        require([
+            'echarts'/*, 'map/js/china' */
+        ], function (echarts) {
+
+            var data = [[10, 16, 3, 'A'], [16, 18, 15, 'B'], [18, 26, 12, 'C'], [26, 32, 22, 'D'], [32, 56, 7, 'E'], [56, 62, 17, 'F']];
+            var colorList = ['#4f81bd', '#c0504d', '#9bbb59', '#604a7b', '#948a54', '#e46c0b'];
+            data = echarts.util.map(data, function (item, index) {
+                return {
+                    value: item,
+                    itemStyle: {
+                        normal: {
+                            color: colorList[index]
+                        }
+                    }
+                };
+            });
+
+            function renderItem(params, api) {
+                var yValue = api.value(2);
+                var start = api.coord([api.value(0), yValue]);
+                var size = api.size([api.value(1) - api.value(0), yValue]);
+                var style = api.style();
+                return {
+                    type: 'rect',
+                    shape: {
+                        x: start[0],
+                        y: start[1],
+                        width: size[0],
+                        height: size[1]
+                    },
+                    style: style
+                };
+            }
+
+            var option = {
+                title: {
+                    text: 'Profit',
+                    left: 'center'
+                },
+                tooltip: {
+                },
+                xAxis: {
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'end'
+                },
+                yAxis: [{
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'end',
+                }, {
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'right'
+                    },
+                    nameLocation: 'end',
+                }],
+
+                series: [{
+                    type: 'scatter',
+                    data: [[12, 33], [33, 55]]
+                }, {
+                    type: 'scatter',
+                    yAxisIndex: 1,
+                    data: [[123, 233], [133, 255]]
+                }]
+            };
+
+            chart = myChart = testHelper.create(echarts, 'main22', {
+                title: 'Align: right, location: end',
+                option: option
+            });
+        });
+
+    </script>
+
+
+
+<script>
+
+    var chart;
+    var myChart;
+    var option;
+
+    require([
+        'echarts'/*, 'map/js/china' */
+    ], function (echarts) {
+
+
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: ['蒸发量', '降水量', '平均温度']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'start'
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'start',
+                    min: 0,
+                    max: 250,
+                    interval: 50,
+                    axisLabel: {
+                        formatter: '{value} ml'
+                    },
+
+                },
+                {
+                    type: 'value',
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'start',
+                    min: 0,
+                    max: 25,
+                    interval: 5,
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '蒸发量',
+                    type: 'bar',
+                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                },
+                {
+                    name: '降水量',
+                    type: 'bar',
+                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                },
+                {
+                    name: '平均温度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                }
+            ]
+        };
+
+        chart = myChart = testHelper.create(echarts, 'main30', {
+            option: option,
+            title: 'Align: center, location: start'
+        });
+    });
+
+</script>
+
+<script>
+
+    var chart;
+    var myChart;
+    var option;
+
+    require([
+        'echarts'/*, 'map/js/china' */
+    ], function (echarts) {
+
+
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: ['蒸发量', '降水量', '平均温度']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'center'
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'center',
+                    min: 0,
+                    max: 250,
+                    interval: 50,
+                    axisLabel: {
+                        formatter: '{value} ml'
+                    },
+
+                },
+                {
+                    type: 'value',
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'center',
+                    min: 0,
+                    max: 25,
+                    interval: 5,
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '蒸发量',
+                    type: 'bar',
+                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                },
+                {
+                    name: '降水量',
+                    type: 'bar',
+                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                },
+                {
+                    name: '平均温度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                }
+            ]
+        };
+
+        chart = myChart = testHelper.create(echarts, 'main31', {
+            option: option,
+            title: 'Align: center, location: center'
+        });
+    });
+
+</script>
+
+<script>
+
+    var chart;
+    var myChart;
+    var option;
+
+    require([
+        'echarts'/*, 'map/js/china' */
+    ], function (echarts) {
+
+
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            legend: {
+                data: ['蒸发量', '降水量', '平均温度']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    name: 'Also a long axis name for X',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'end'
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'This is a very long axis name for the Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'end',
+                    min: 0,
+                    max: 250,
+                    interval: 50,
+                    axisLabel: {
+                        formatter: '{value} ml'
+                    },
+
+                },
+                {
+                    type: 'value',
+                    name: 'This is a another very long axis name for the second Y',
+                    nameTextStyle: {
+                        align: 'center'
+                    },
+                    nameLocation: 'end',
+                    min: 0,
+                    max: 25,
+                    interval: 5,
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '蒸发量',
+                    type: 'bar',
+                    data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                },
+                {
+                    name: '降水量',
+                    type: 'bar',
+                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                },
+                {
+                    name: '平均温度',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                }
+            ]
+        };
+
+        chart = myChart = testHelper.create(echarts, 'main32', {
+            option: option,
+            title: 'Align: center, location: end'
+        });
+    });
+
+</script>
+
+
+
+</body>
+
+</html>
