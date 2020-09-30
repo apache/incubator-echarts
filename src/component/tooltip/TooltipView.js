@@ -557,6 +557,20 @@ export default echarts.extendComponentView({
         });
     },
 
+
+    _getTooltipCache: function (key) {
+        return this._toolTipFormatterCache && this._toolTipFormatterCache[key];
+    },
+
+    _setTooltipCache: function (key, value) {
+        if (!key) {
+            return;
+        }
+
+        this._toolTipFormatterCache = this._toolTipFormatterCache || {};
+        this._toolTipFormatterCache[key] = value;
+    },
+
     _showTooltipContent: function (
         tooltipModel, defaultHtml, params, asyncTicket, x, y, positionExpr, el, markers
     ) {
@@ -577,6 +591,16 @@ export default echarts.extendComponentView({
             html = formatUtil.formatTpl(formatter, params, true);
         }
         else if (typeof formatter === 'function') {
+            // formatter cache
+            var cacheHtml;
+            var key;
+            var enableCache = tooltipModel.get('triggerOnce');
+            if (enableCache && params && params[0]) {
+                var p = params[0];
+                key = [p.componentIndex, p.seriesId, p.seriesName, p.dataIndex].join('_');
+                cacheHtml = this._getTooltipCache(key);
+            }
+
             var callback = bind(function (cbTicket, html) {
                 if (cbTicket === this._ticket) {
                     tooltipContent.setContent(html, markers, tooltipModel);
@@ -586,7 +610,10 @@ export default echarts.extendComponentView({
                 }
             }, this);
             this._ticket = asyncTicket;
-            html = formatter(params, asyncTicket, callback);
+            html = cacheHtml || formatter(params, asyncTicket, callback);
+            if (enableCache) {
+                this._setTooltipCache(key, html);
+            }
         }
 
         tooltipContent.setContent(html, markers, tooltipModel);
@@ -729,6 +756,7 @@ export default echarts.extendComponentView({
         if (env.node) {
             return;
         }
+        delete this._toolTipFormatterCache;
         this._tooltipContent.dispose();
         globalListener.unregister('itemTooltip', api);
     }

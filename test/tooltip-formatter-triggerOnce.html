@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/facePrint.js"></script>
+    <script src="lib/testHelper.js"></script>
+    <!-- <script src="ut/lib/canteen.js"></script> -->
+    <link rel="stylesheet" href="lib/reset.css" />
+</head>
+<body>
+<style>
+</style>
+
+
+
+<div id="main0"></div>
+<div id="main1"></div>
+<div id="main2"></div>
+
+<script>
+    require(['echarts'/*, 'map/js/china' */], function (echarts) {
+        var labelRight = {
+            position: 'right'
+        };
+        var option = {
+            title: {
+                text: 'toolsTip formatter trigger once test #12338',
+                subtext: 'From ExcelHome',
+                sublink: 'http://e.weibo.com/1341556070/AjwF2AgQm'
+            },
+            tooltip: {
+                trigger: 'axis',
+                triggerOnce: true,        // 如果配置为true，formatter函数只触发一次
+                axisPointer: {            // 坐标轴指示器log，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                },
+                formatter: function (params, ticket, callback) {
+                    console.log(params, 'test');
+                    callback(ticket,'777');// 这里回调会被执行很多遍
+                    return params[0].seriesId + params[0].name;
+                }
+            },
+            grid: {
+                top: 80,
+                bottom: 30
+            },
+            xAxis: {
+                type: 'value',
+                position: 'top',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                }
+            },
+            yAxis: {
+                type: 'category',
+                axisLine: {show: false},
+                axisLabel: {show: false},
+                axisTick: {show: false},
+                splitLine: {show: false},
+                data: ['ten', 'nine', 'eight', 'seven', 'six', 'five', 'four', 'three', 'two', 'one']
+            },
+            series: [
+                {
+                    name: '生活费',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        show: true,
+                        formatter: '{b}'
+                    },
+                    data: [
+                        {value: -0.07, label: labelRight},
+                        {value: -0.09, label: labelRight},
+                        0.2, 0.44,
+                        {value: -0.23, label: labelRight},
+                        0.08,
+                        {value: -0.17, label: labelRight},
+                        0.47,
+                        {value: -0.36, label: labelRight},
+                        0.18
+                    ]
+                }
+            ]
+        };
+
+
+        var chart = testHelper.create(echarts, 'main0', {
+            title: [
+                'the toolTips.triggerOnce set "true" ',
+                'Case from issue #12338'
+            ],
+            option: option
+        });
+    });
+</script>
+
+</body>
+</html>
+

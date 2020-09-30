@@ -41,7 +41,6 @@ var CartesianAxisView = AxisView.extend({
      * @override
      */
     render: function (axisModel, ecModel, api, payload) {
-
         this.group.removeAll();
 
         var oldAxisGroup = this._axisGroup;
@@ -84,6 +83,7 @@ var CartesianAxisView = AxisView.extend({
      * @private
      */
     _splitLine: function (axisModel, gridModel) {
+
         var axis = axisModel.axis;
 
         if (axis.scale.isBlank()) {
