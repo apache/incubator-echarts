@@ -25,6 +25,44 @@ import BoundingRect from 'zrender/src/core/BoundingRect';
 import {calculateTextPosition} from 'zrender/src/contain/text';
 
 /**
+ * Dashed shape
+ * @inner
+ */
+var Dashed = graphic.extendShape({
+    type: 'dashed',
+    shape: {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
+        percent: 1
+    },
+    style: {
+        stroke: '#000',
+        fill: null
+    },
+    buildPath: function (path, shape) {
+        var x1 = shape.x1;
+        var y1 = shape.y1;
+        var x2 = shape.x2;
+        var percent = shape.percent;
+
+        if (percent === 0) {
+            return;
+        }
+
+        if (percent < 1) {
+            x2 = x1 * (1 - percent) + x2 * percent;
+        }
+
+        var dashNum = (x2 - x1) / 15;
+        for (var i = 0; i < 15; i++) {
+            path.arc(x1 + dashNum * i, y1, 0.5, 0, Math.PI * 2, true);
+        }
+    }
+});
+
+/**
  * Triangle shape
  * @inner
  */
@@ -181,7 +219,9 @@ var symbolCtors = {
 
     arrow: Arrow,
 
-    triangle: Triangle
+    triangle: Triangle,
+
+    dashed: Dashed
 };
 
 var symbolShapeMakers = {
@@ -250,6 +290,13 @@ var symbolShapeMakers = {
         shape.cy = y + h / 2;
         shape.width = w;
         shape.height = h;
+    },
+
+    dashed: function (x, y, w, h, shape) {
+        shape.x1 = x;
+        shape.y1 = y + h / 2;
+        shape.x2 = x + w;
+        shape.y2 = y + h / 2;
     }
 };
 
