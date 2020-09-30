@@ -458,16 +458,32 @@ function fixExtentByAxis(axisProxy, dataExtent) {
     var isCategoryAxis = axisModel.get('type') === 'category';
     var axisDataLen = isCategoryAxis && axisModel.getCategories().length;
 
-    if (min != null && min !== 'dataMin' && typeof min !== 'function') {
-        dataExtent[0] = min;
+    if (min != null && min !== 'dataMin') {
+        if (typeof max === 'function') {
+            dataExtent[0] = min({
+                min: dataExtent[0],
+                max: dataExtent[1]
+            });
+        }
+        else {
+            dataExtent[0] = min;
+        }
     }
     else if (isCategoryAxis) {
         dataExtent[0] = axisDataLen > 0 ? 0 : NaN;
     }
 
     var max = axisModel.getMax(true);
-    if (max != null && max !== 'dataMax' && typeof max !== 'function') {
-        dataExtent[1] = max;
+    if (max != null && max !== 'dataMax') {
+        if (typeof max === 'function') {
+            dataExtent[1] = max({
+                min: dataExtent[0],
+                max: dataExtent[1]
+            });
+        }
+        else {
+            dataExtent[1] = max;
+        }
     }
     else if (isCategoryAxis) {
         dataExtent[1] = axisDataLen > 0 ? axisDataLen - 1 : NaN;
