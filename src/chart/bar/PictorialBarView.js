@@ -748,7 +748,8 @@ function updateCommon(bar, opt, symbolMeta) {
     var itemModel = symbolMeta.itemModel;
     // Color must be excluded.
     // Because symbol provide setColor individually to set fill and stroke
-    var normalStyle = itemModel.getModel('itemStyle').getItemStyle(['color']);
+    var itemStyleModel = itemModel.getModel('itemStyle')
+    var normalStyle = itemStyleModel.getItemStyle(['color']);
     var hoverStyle = itemModel.getModel('emphasis.itemStyle').getItemStyle();
     var cursorStyle = itemModel.getShallow('cursor');
 
@@ -771,6 +772,12 @@ function updateCommon(bar, opt, symbolMeta) {
     var barRectHoverStyle = {};
     var barPositionOutside = opt.valueDim.posDesc[+(symbolMeta.boundingLength > 0)];
     var barRect = bar.__pictorialBarRect;
+
+    barRect.useStyle(zrUtil.defaults({
+        stroke: 'transparent',
+        fill: 'transparent',
+        lineWidth: 0
+    }), itemStyleModel.getBarItemStyle());
 
     setLabel(
         barRect.style, barRectHoverStyle, itemModel,
