@@ -61,6 +61,21 @@ function fadeInItem(item, opacityPath) {
     el.highlight && el.highlight();
 }
 
+function sum(array, cb, orient) {
+    var sum = 0;
+    zrUtil.each(array, function (data) {
+      var value = +cb.call(array, data, orient);
+        if (!isNaN(value)) {
+            sum += value;
+        }
+    });
+    return sum;
+}
+
+function getEdgeValue(edge) {
+    return edge.getValue();
+}
+
 var SankeyShape = graphic.extendShape({
     shape: {
         x1: 0, y1: 0,
@@ -68,11 +83,16 @@ var SankeyShape = graphic.extendShape({
         cpx1: 0, cpy1: 0,
         cpx2: 0, cpy2: 0,
         extent: 0,
-        orient: ''
+        extent1: 0,
+        extent2: 0,
+        orient: '',
+        mode: ''
     },
 
     buildPath: function (ctx, shape) {
         var extent = shape.extent;
+        var extent1 = shape.mode === 'uneven' ? shape.extent1 : extent;
+        var extent2 = shape.mode === 'uneven' ? shape.extent2 : extent;
         ctx.moveTo(shape.x1, shape.y1);
         ctx.bezierCurveTo(
             shape.cpx1, shape.cpy1,
@@ -80,19 +100,19 @@ var SankeyShape = graphic.extendShape({
             shape.x2, shape.y2
         );
         if (shape.orient === 'vertical') {
-            ctx.lineTo(shape.x2 + extent, shape.y2);
+            ctx.lineTo(shape.x2 + extent2, shape.y2);
             ctx.bezierCurveTo(
-                shape.cpx2 + extent, shape.cpy2,
-                shape.cpx1 + extent, shape.cpy1,
-                shape.x1 + extent, shape.y1
+                shape.cpx2 + extent2, shape.cpy2,
+                shape.cpx1 + extent1, shape.cpy1,
+                shape.x1 + extent1, shape.y1
             );
         }
         else {
-            ctx.lineTo(shape.x2, shape.y2 + extent);
+            ctx.lineTo(shape.x2, shape.y2 + extent2);
             ctx.bezierCurveTo(
-                shape.cpx2, shape.cpy2 + extent,
-                shape.cpx1, shape.cpy1 + extent,
-                shape.x1, shape.y1 + extent
+                shape.cpx2, shape.cpy2 + extent2,
+                shape.cpx1, shape.cpy1 + extent1,
+                shape.x1, shape.y1 + extent1
             );
         }
         ctx.closePath();
@@ -132,6 +152,7 @@ export default echarts.extendChartView({
         var width = layoutInfo.width;
         // view height
         var height = layoutInfo.height;
+        var mode = seriesModel.get('mode');
         var nodeData = seriesModel.getData();
         var edgeData = seriesModel.getData('edge');
         var orient = seriesModel.get('orient');
@@ -151,14 +172,28 @@ export default echarts.extendChartView({
             var lineStyleModel = edge.getModel('lineStyle');
             var curvature = lineStyleModel.get('curveness');
             var n1Layout = edge.node1.getLayout();
+            var value1max = Math.max(sum(edge.node1.outEdges, getEdgeValue), sum(edge.node1.inEdges, getEdgeValue));
+            var n1lengthin = mode === 'uneven' && edge.node1.getValue() < value1max ? edge.node1.inEdges : [];
+            n1lengthin = n1lengthin.length || 1;
+            var n1lengthout = mode === 'uneven' && edge.node1.getValue() < value1max ? edge.node1.outEdges : [];
+            n1lengthout = n1lengthout.length || 1;
             var node1Model = edge.node1.getModel();
             var dragX1 = node1Model.get('localX');
             var dragY1 = node1Model.get('localY');
             var n2Layout = edge.node2.getLayout();
+            var value2max = Math.max(sum(edge.node2.outEdges, getEdgeValue), sum(edge.node2.inEdges, getEdgeValue));
+            var n2lengthin = mode === 'uneven' && edge.node2.getValue() < value2max ? edge.node2.inEdges : [];
+            n2lengthin = n2lengthin.length || 1;
+            var n2lengthout = mode === 'uneven' && edge.node2.getValue() < value2max ? edge.node2.outEdges : [];
+            n2lengthout = n2lengthout.length || 1;
             var node2Model = edge.node2.getModel();
             var dragX2 = node2Model.get('localX');
             var dragY2 = node2Model.get('localY');
             var edgeLayout = edge.getLayout();
+            var n1lengthmin = Math.min(n1lengthin, n1lengthout);
+            var n1lengthmax = Math.max(n1lengthin, n1lengthout);
+            var n2lengthmin = Math.min(n2lengthin, n2lengthout);
+            var n2lengthmax = Math.max(n2lengthin, n2lengthout);
             var x1;
             var y1;
             var x2;
@@ -169,27 +204,30 @@ export default echarts.extendChartView({
             var cpy2;
 
             curve.shape.extent = Math.max(1, edgeLayout.dy);
+            curve.shape.extent1 = Math.max(1, edgeLayout.dy / n1lengthout);
+            curve.shape.extent2 = Math.max(1, edgeLayout.dy / n2lengthin);
             curve.shape.orient = orient;
+            curve.shape.mode = mode;
 
             if (orient === 'vertical') {
-                x1 = (dragX1 != null ? dragX1 * width : n1Layout.x) + edgeLayout.sy;
-                y1 = (dragY1 != null ? dragY1 * height : n1Layout.y) + n1Layout.dy;
-                x2 = (dragX2 != null ? dragX2 * width : n2Layout.x) + edgeLayout.ty;
-                y2 = dragY2 != null ? dragY2 * height : n2Layout.y;
-                cpx1 = x1;
-                cpy1 = y1 * (1 - curvature) + y2 * curvature;
-                cpx2 = x2;
-                cpy2 = y1 * curvature + y2 * (1 - curvature);
+              x1 = (dragX1 != null ? dragX1 * width : n1Layout.x / n1lengthmin) + edgeLayout.sy / n1lengthmax;
+              y1 = (dragY1 != null ? dragY1 * height : n1Layout.y) + n1Layout.dy;
+              x2 = (dragX2 != null ? dragX2 * width : n2Layout.x / n2lengthmin) + edgeLayout.ty / n2lengthmax;
+              y2 = dragY2 != null ? dragY2 * height : n2Layout.y;
+              cpx1 = x1;
+              cpy1 = y1 * (1 - curvature) + y2 * curvature;
+              cpx2 = x2;
+              cpy2 = y1 * curvature + y2 * (1 - curvature);
             }
             else {
-                x1 = (dragX1 != null ? dragX1 * width : n1Layout.x) + n1Layout.dx;
-                y1 = (dragY1 != null ? dragY1 * height : n1Layout.y) + edgeLayout.sy;
-                x2 = dragX2 != null ? dragX2 * width : n2Layout.x;
-                y2 = (dragY2 != null ? dragY2 * height : n2Layout.y) + edgeLayout.ty;
-                cpx1 = x1 * (1 - curvature) + x2 * curvature;
-                cpy1 = y1;
-                cpx2 = x1 * curvature + x2 * (1 - curvature);
-                cpy2 = y2;
+              x1 = (dragX1 != null ? dragX1 * width : n1Layout.x) + n1Layout.dx;
+              y1 = (dragY1 != null ? dragY1 * height : n1Layout.y / n1lengthmin) + edgeLayout.sy / n1lengthmax;
+              x2 = dragX2 != null ? dragX2 * width : n2Layout.x;
+              y2 = (dragY2 != null ? dragY2 * height : n2Layout.y / n2lengthmin) + edgeLayout.ty / n2lengthmax;
+              cpx1 = x1 * (1 - curvature) + x2 * curvature;
+              cpy1 = y1;
+              cpx2 = x1 * curvature + x2 * (1 - curvature);
+              cpy2 = y2;
             }
 
             curve.setShape({

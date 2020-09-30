@@ -28,6 +28,8 @@ export default function (ecModel, api, payload) {
         var nodeWidth = seriesModel.get('nodeWidth');
         var nodeGap = seriesModel.get('nodeGap');
 
+        var mode = seriesModel.get('mode');
+
         var layoutInfo = getViewRect(seriesModel, api);
 
         seriesModel.layoutInfo = layoutInfo;
@@ -40,7 +42,7 @@ export default function (ecModel, api, payload) {
         var nodes = graph.nodes;
         var edges = graph.edges;
 
-        computeNodeValues(nodes);
+        computeNodeValues(nodes, mode);
 
         var filteredNodes = zrUtil.filter(nodes, function (node) {
             return node.getLayout().value === 0;
@@ -82,13 +84,18 @@ function layoutSankey(nodes, edges, nodeWidth, nodeGap, width, height, iteration
  * Compute the value of each node by summing the associated edge's value
  *
  * @param {module:echarts/data/Graph~Node} nodes  node of sankey view
+ * @param {string} mode  mode of sankey view
  */
-function computeNodeValues(nodes) {
+function computeNodeValues(nodes, mode) {
+    var isUnevenMode = mode === 'uneven';
     zrUtil.each(nodes, function (node) {
         var value1 = sum(node.outEdges, getEdgeValue);
         var value2 = sum(node.inEdges, getEdgeValue);
         var nodeRawValue = node.getValue() || 0;
         var value = Math.max(value1, value2, nodeRawValue);
+        if (isUnevenMode) {
+          value = nodeRawValue || value;
+        }
         node.setLayout({value: value}, true);
     });
 }

@@ -166,6 +166,9 @@ var SankeySeries = SeriesModel.extend({
         // Value can be 'vertical'
         orient: 'horizontal',
 
+        // Value can be 'uneven'
+        mode: 'normal',
+
         // The dx of the node
         nodeWidth: 20,
 
