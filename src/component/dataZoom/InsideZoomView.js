@@ -114,11 +114,15 @@ var roamHandlers = {
         var directionInfo = getDirectionInfo[coordSysName](
             null, [e.originX, e.originY], axisModel, controller, coordInfo
         );
+
+        // diff=0 will freezing dataZoom
+        var rangeDiff = (range[1] - range[0]) || 0.1;
+
         var percentPoint = (
             directionInfo.signal > 0
                 ? (directionInfo.pixelStart + directionInfo.pixelLength - directionInfo.pixel)
                 : (directionInfo.pixel - directionInfo.pixelStart)
-            ) / directionInfo.pixelLength * (range[1] - range[0]) + range[0];
+            ) / directionInfo.pixelLength * (rangeDiff) + range[0];
 
         var scale = Math.max(1 / e.scale, 0);
         range[0] = (range[0] - percentPoint) * scale + percentPoint;
