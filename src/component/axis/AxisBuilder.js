@@ -25,7 +25,7 @@ import {isRadianAroundZero, remRadian} from '../../util/number';
 import {createSymbol} from '../../util/symbol';
 import * as matrixUtil from 'zrender/src/core/matrix';
 import {applyTransform as v2ApplyTransform} from 'zrender/src/core/vector';
-import {shouldShowAllLabels} from '../../coord/axisHelper';
+import {shouldShowAllLabels, estimateLabelUnionRect} from '../../coord/axisHelper';
 
 
 var PI = Math.PI;
@@ -269,7 +269,22 @@ var builders = {
         var nameLocation = axisModel.get('nameLocation');
         var nameDirection = opt.nameDirection;
         var textStyleModel = axisModel.getModel('nameTextStyle');
-        var gap = axisModel.get('nameGap') || 0;
+        // label + gap
+        var distanceToAxis = calcDistanceToAxis();
+        function calcDistanceToAxis() {
+          var axis = axisModel.axis;
+          if (axis.grid.model.get('containLabel') && !axis.model.get('axisLabel.inside')) {
+            var labelUnionRect = estimateLabelUnionRect(axis);
+            if (!labelUnionRect) {
+              return 0;
+            }
+            var dim = axis.isHorizontal() ? 'height' : 'width';
+            var margin = axisModel.get('axisLabel.margin');
+            return labelUnionRect[dim] + margin;
+          }
+          return 0;
+        }
+        var gap = (axisModel.get('nameGap') || 0) + distanceToAxis;
 
         var extent = this.axisModel.axis.getExtent();
         var gapSignal = extent[0] > extent[1] ? -1 : 1;
