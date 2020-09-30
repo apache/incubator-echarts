@@ -270,7 +270,7 @@ echarts.registerPreprocessor(function (option) {
         }
 
         if (toolboxOpt && toolboxOpt.feature) {
-            var dataZoomOpt = toolboxOpt.feature.dataZoom;
+            var dataZoomOpt = toolboxOpt.feature.dataZoom || {};
             // FIXME: If add dataZoom when setOption in merge mode,
             // no axis info to be added. See `test/dataZoom-extreme.html`
             addForAxis('xAxis', dataZoomOpt);
