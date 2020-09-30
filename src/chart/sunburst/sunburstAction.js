@@ -91,3 +91,34 @@ echarts.registerAction(
         }
     }
 );
+
+const SHOWTIP_ACTION = 'sunburstShowTip';
+
+echarts.registerAction(
+    {type: SHOWTIP_ACTION, update: 'update'},
+    function (payload, ecModel) {
+        ecModel.eachComponent(
+            {mainType: 'series', subType: 'sunburst', query: payload},
+            handleShowTip
+        );
+
+        function handleShowTip(model, index) {
+            var targetInfo = helper
+                .retrieveTargetInfo(payload, [SHOWTIP_ACTION], model);
+
+            if (targetInfo) {
+                const {targetNodeId, postion} = payload;
+                const {dataIndex, seriesIndex} = targetInfo.node.piece;
+
+                window.chart.dispatchAction({
+                    type: 'showTip',
+                    targetNodeId,
+                    name: targetNodeId,
+                    postion,
+                    dataIndex,
+                    seriesIndex
+                });
+            }
+        }
+    }
+);

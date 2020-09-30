@@ -190,6 +190,11 @@ under the License.
                             data: data
                         }
                     });
+
+                    chart.dispatchAction({
+                        type: 'sunburstShowTip',
+                        targetNodeId: 'Grandpa'
+                    })
                 }, 3000);
 
                 setTimeout(function () {
