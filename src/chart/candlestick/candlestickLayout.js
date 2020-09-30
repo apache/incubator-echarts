@@ -92,7 +92,7 @@ export default {
                 );
 
                 data.setItemLayout(dataIndex, {
-                    sign: getSign(data, dataIndex, openVal, closeVal, closeDim),
+                    sign: getSign(data, dataIndex, openVal, closeVal, closeDim, highestVal, lowestVal),
                     initBaseline: openVal > closeVal
                         ? ocHighPoint[vDimIdx] : ocLowPoint[vDimIdx], // open point.
                     ends: ends,
@@ -168,7 +168,7 @@ export default {
                     continue;
                 }
 
-                points[offset++] = getSign(data, dataIndex, openVal, closeVal, closeDim);
+                points[offset++] = getSign(data, dataIndex, openVal, closeVal, closeDim, highestVal, lowestVal);
 
                 tmpIn[cDimIdx] = axisDimVal;
 
@@ -186,7 +186,7 @@ export default {
     }
 };
 
-function getSign(data, dataIndex, openVal, closeVal, closeDim) {
+function getSign(data, dataIndex, openVal, closeVal, closeDim, highestVal, lowestVal) {
     var sign;
     if (openVal > closeVal) {
         sign = -1;
@@ -194,7 +194,15 @@ function getSign(data, dataIndex, openVal, closeVal, closeDim) {
     else if (openVal < closeVal) {
         sign = 1;
     }
-    else {
+    else if (openVal
+            && closeVal
+            && highestVal
+            && lowestVal
+            && openVal === closeVal
+            && highestVal !== lowestVal) {  // scenario of doji
+        sign = 0;
+    }
+    else {  // scenario of limit at the opening
         sign = dataIndex > 0
             // If close === open, compare with close of last record
             ? (data.get(closeDim, dataIndex - 1) <= closeVal ? 1 : -1)

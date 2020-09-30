@@ -145,8 +145,10 @@ var theme = {
             normal: {
                 color: '#FD1050',
                 color0: '#0CF49B',
+                color1: '#FFF',
                 borderColor: '#FD1050',
-                borderColor0: '#0CF49B'
+                borderColor0: '#0CF49B',
+                borderColor1: '#FFF'
             }
         }
     }

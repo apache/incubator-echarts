@@ -64,11 +64,13 @@ var CandlestickSeries = SeriesModel.extend({
         itemStyle: {
             color: '#c23531', // 阳线 positive
             color0: '#314656', // 阴线 negative     '#c23531', '#314656'
+            color1: '#000',  // 十字星 neutral
             borderWidth: 1,
             // FIXME
             // ec2中使用的是lineStyle.color 和 lineStyle.color0
             borderColor: '#c23531',
-            borderColor0: '#314656'
+            borderColor0: '#314656',
+            borderColor1: '#000'
         },
 
         emphasis: {

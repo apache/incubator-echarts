@@ -25,7 +25,7 @@ import {createClipPath} from '../helper/createClipPathFromCoordSys';
 
 var NORMAL_ITEM_STYLE_PATH = ['itemStyle'];
 var EMPHASIS_ITEM_STYLE_PATH = ['emphasis', 'itemStyle'];
-var SKIP_PROPS = ['color', 'color0', 'borderColor', 'borderColor0'];
+var SKIP_PROPS = ['color', 'color0', 'borderColor', 'borderColor0', 'color1', 'borderColor1'];
 
 var CandlestickView = ChartView.extend({
 

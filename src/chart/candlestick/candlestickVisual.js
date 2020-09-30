@@ -21,8 +21,10 @@ import createRenderPlanner from '../helper/createRenderPlanner';
 
 var positiveBorderColorQuery = ['itemStyle', 'borderColor'];
 var negativeBorderColorQuery = ['itemStyle', 'borderColor0'];
+var neutralBorderColorQuery = ['itemStyle', 'borderColor1'];
 var positiveColorQuery = ['itemStyle', 'color'];
 var negativeColorQuery = ['itemStyle', 'color0'];
+var neutralColorQuery = ['itemStyle', 'color1'];
 
 export default {
 
@@ -41,8 +43,10 @@ export default {
             legendSymbol: 'roundRect',
             colorP: getColor(1, seriesModel),
             colorN: getColor(-1, seriesModel),
+            colorNeutralColor: getColor(0, seriesModel),
             borderColorP: getBorderColor(1, seriesModel),
-            borderColorN: getBorderColor(-1, seriesModel)
+            borderColorN: getBorderColor(-1, seriesModel),
+            borderColorNeutralColor: getBorderColor(0, seriesModel)
         });
 
         // Only visible series has each data be visual encoded
@@ -71,15 +75,47 @@ export default {
         }
 
         function getColor(sign, model) {
+            var colorQuery = getColorOrBorderColorQuery(sign, 'color');
+
             return model.get(
-                sign > 0 ? positiveColorQuery : negativeColorQuery
+                colorQuery
             );
         }
 
         function getBorderColor(sign, model) {
+            var borderColorQuery = getColorOrBorderColorQuery(sign, 'borderColor');
+
             return model.get(
-                sign > 0 ? positiveBorderColorQuery : negativeBorderColorQuery
+                borderColorQuery
             );
+        }
+
+        function getColorOrBorderColorQuery(sign, colorType) {
+            var colorQuery;
+            var colorAndBorderColor = {
+                color: {
+                    neutral: neutralColorQuery,
+                    positive: positiveColorQuery,
+                    negative: negativeColorQuery
+                },
+                borderColor: {
+                    neutral: neutralBorderColorQuery,
+                    positive: positiveBorderColorQuery,
+                    negative: negativeBorderColorQuery
+                }
+            };
+
+            if (sign === 0) {
+                colorQuery = colorAndBorderColor[colorType].neutral;
+            }
+            else if (sign > 0) {
+                colorQuery = colorAndBorderColor[colorType].positive;
+            }
+            else {
+                colorQuery = colorAndBorderColor[colorType].negative;
+            }
+
+            return colorQuery;
         }
 
     }
