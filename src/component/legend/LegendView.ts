@@ -35,12 +35,10 @@ import {
     ZRRectLike,
     ECElement,
     CommonTooltipOption,
-    ColorString
 } from '../../util/types';
 import Model from '../../model/Model';
 import Displayable, { DisplayableState } from 'zrender/src/graphic/Displayable';
 import { PathStyleProps } from 'zrender/src/graphic/Path';
-import { parse, stringify } from 'zrender/src/tool/color';
 
 const curry = zrUtil.curry;
 const each = zrUtil.each;
@@ -197,17 +195,17 @@ class LegendView extends ComponentView {
             if (seriesModel) {
                 const data = seriesModel.getData();
                 const style = data.getVisual('style');
-                const color = style[data.getVisual('drawType')] || style.fill;
                 const borderColor = style.stroke;
 
                 // Using rect symbol defaultly
                 const legendSymbolType = data.getVisual('legendSymbol') || 'roundRect';
                 const symbolType = data.getVisual('symbol');
+                const dataParams = seriesModel.getDataParams(dataIndex);
 
                 const itemGroup = this._createItem(
                     name, dataIndex, itemModel, legendModel,
                     legendSymbolType, symbolType,
-                    itemAlign, color, borderColor,
+                    itemAlign, dataParams.color, borderColor,
                     selectMode
                 );
 
@@ -236,22 +234,14 @@ class LegendView extends ComponentView {
 
                         const style = provider.getItemVisual(idx, 'style') as PathStyleProps;
                         const borderColor = style.stroke;
-                        let color = style.fill;
-                        const colorArr = parse(style.fill as ColorString);
-                        // Color may be set to transparent in visualMap when data is out of range.
-                        // Do not show nothing.
-                        if (colorArr && colorArr[3] === 0) {
-                            colorArr[3] = 0.2;
-                            // TODO color is set to 0, 0, 0, 0. Should show correct RGBA
-                            color = stringify(colorArr, 'rgba');
-                        }
 
                         const legendSymbolType = 'roundRect';
+                        const dataParams = seriesModel.getDataParams(dataIndex);
 
                         const itemGroup = this._createItem(
                             name, dataIndex, itemModel, legendModel,
                             legendSymbolType, null,
-                            itemAlign, color, borderColor,
+                            itemAlign, dataParams.color, borderColor,
                             selectMode
                         );
 
@@ -333,7 +323,7 @@ class LegendView extends ComponentView {
         itemAlign: LegendOption['align'],
         color: ZRColor,
         borderColor: ZRColor,
-        selectMode: LegendOption['selectedMode']
+        selectMode: LegendOption['selectedMode'],
     ) {
         const itemWidth = legendModel.get('itemWidth');
         const itemHeight = legendModel.get('itemHeight');
