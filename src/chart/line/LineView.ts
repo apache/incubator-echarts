@@ -855,6 +855,10 @@ class LineView extends ChartView {
                 this, seriesModel, ecModel, api, payload
             );
         }
+
+        if (this._polygon) {
+            this._polygon.z = seriesModel.get('z') - 1;
+        }
     }
 
     downplay(

@@ -98,7 +98,7 @@ class BaseBarSeriesModel<Opts extends BaseBarSeriesOption<unknown> = BaseBarSeri
 
     static defaultOption: BaseBarSeriesOption<unknown, unknown> = {
         zlevel: 0,
-        z: 2,
+        z: 1,
         coordinateSystem: 'cartesian2d',
         legendHoverLink: true,
         // stack: null

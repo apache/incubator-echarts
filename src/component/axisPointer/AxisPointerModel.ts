@@ -79,7 +79,7 @@ class AxisPointerModel extends ComponentModel<AxisPointerOption> {
         show: 'auto',
 
         zlevel: 0,
-        z: 50,
+        z: 2,
 
         type: 'line', // 'line' 'shadow' 'cross' 'none'.
         // axispointer triggered by tootip determine snap automatically,
