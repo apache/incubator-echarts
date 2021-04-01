@@ -163,10 +163,7 @@ class LineSeriesModel extends SeriesModel<LineSeriesOption> {
         },
 
         emphasis: {
-            scale: true,
-            lineStyle: {
-                width: 'bolder'
-            }
+            scale: true
         },
         // areaStyle: {
             // origin of areaStyle. Valid values:
