@@ -39,6 +39,7 @@ import {
 import List from '../../data/List';
 import type Cartesian2D from '../../coord/cartesian/Cartesian2D';
 import type Polar from '../../coord/polar/Polar';
+import { BrushCommonSelectorsForSeries } from '../../component/brush/selector';
 
 type LineDataValue = OptionDataValue | OptionDataValue[];
 
@@ -204,6 +205,11 @@ class LineSeriesModel extends SeriesModel<LineSeriesOption> {
         progressive: 0,
         hoverLayerThreshold: Infinity
     };
+
+    brushSelector(dataIndex: number, data: List, selectors: BrushCommonSelectorsForSeries): boolean {
+        const pts = data.getLayout('points')
+        return selectors.point([pts[dataIndex * 2], pts[dataIndex * 2 + 1]]);
+    }
 }
 
 export default LineSeriesModel;
