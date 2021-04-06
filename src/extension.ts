@@ -29,6 +29,7 @@ import {
     registerTransform,
     registerLoading,
     registerMap,
+    registerTheme,
     PRIORITY
 } from './core/echarts';
 import ComponentView from './view/Component';
@@ -54,6 +55,7 @@ const extensionRegisters = {
     registerTransform,
     registerLoading,
     registerMap,
+    registerTheme,
     PRIORITY,
 
     ComponentModel,

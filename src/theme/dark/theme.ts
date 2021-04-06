@@ -17,6 +17,8 @@
 * under the License.
 */
 
+// registerd by default
+
 const contrastColor = '#B9B8CE';
 const backgroundColor = '#100C2A';
 const axisCommon = function () {
