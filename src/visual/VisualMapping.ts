@@ -335,6 +335,25 @@ class VisualMapping<VisualOption
         symbolSize: {
             applyVisual: makeApplyVisual('symbolSize'),
             _normalizedToVisual: createNormalizedToNumericVisual([0, 1])
+        },
+
+        cursor: {
+            applyVisual: function (value, getter, setter) {
+                const symbolCfg = this.mapValueToVisual(value);
+                setter('symbol', symbolCfg as string);
+            },
+            _normalizedToVisual: {
+                linear: doMapToArray,
+                category: doMapCategory,
+                piecewise: function (normalized, value) {
+                    let result = getSpecifiedVisual.call(this, value);
+                    if (result == null) {
+                        result = doMapToArray.call(this, normalized);
+                    }
+                    return result;
+                },
+                fixed: doMapFixed
+            }
         }
     };
 

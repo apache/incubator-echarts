@@ -31,6 +31,8 @@ import {
 import { ModelFinderObject } from '../../util/model';
 
 const DEFAULT_OUT_OF_BRUSH_COLOR = '#ddd';
+const DEFAULT_OUT_OF_BRUSH_CURSOR = 'crosshair';
+const DEFAULT_BRUSH_IN_CURSOR = 'move';
 
 /**
  * The input to define brush areas.
@@ -134,6 +136,12 @@ class BrushModel extends ComponentModel<BrushOption> {
         brushType: 'rect',
         brushMode: 'single',
         transformable: true,
+        inBrush: {
+            cursor: DEFAULT_BRUSH_IN_CURSOR
+        },
+        outOfBrush: {
+            cursor: DEFAULT_OUT_OF_BRUSH_CURSOR
+        },
         brushStyle: {
             borderWidth: 1,
             color: 'rgba(210,219,238,0.3)',
@@ -177,7 +185,10 @@ class BrushModel extends ComponentModel<BrushOption> {
 
         const inBrush = thisOption.inBrush = thisOption.inBrush || {};
         // Always give default visual, consider setOption at the second time.
-        thisOption.outOfBrush = thisOption.outOfBrush || {color: DEFAULT_OUT_OF_BRUSH_COLOR};
+        thisOption.outOfBrush = thisOption.outOfBrush || {
+            color: DEFAULT_OUT_OF_BRUSH_COLOR,
+            cursor: DEFAULT_OUT_OF_BRUSH_CURSOR
+        };
 
         if (!inBrush.hasOwnProperty('liftZ')) {
             // Bigger than the highlight z lift, otherwise it will
@@ -234,6 +245,8 @@ function generateBrushOption(
             brushType: option.brushType,
             brushMode: option.brushMode,
             transformable: option.transformable,
+            outOfBrushCursor: option.outOfBrush.cursor,
+            inBrushCursor: option.inBrush.cursor,
             brushStyle: new Model(option.brushStyle).getItemStyle(),
             removeOnClick: option.removeOnClick,
             z: option.z

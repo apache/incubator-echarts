@@ -76,6 +76,11 @@ export interface BrushCoverConfig {
     transformable?: boolean;
     removeOnClick?: boolean;
     z?: number;
+
+    // Cursor style when mouse is outside the brush
+    outOfBrushCursor?: string;
+    // Cursor style when mouse is inside the brush
+    inBrushCursor?: string;
 }
 
 /**
@@ -84,7 +89,7 @@ export interface BrushCoverConfig {
  */
 export interface BrushCoverCreatorConfig extends Pick<
     BrushCoverConfig,
-    'brushMode' | 'transformable' | 'removeOnClick' | 'brushStyle' | 'z'
+    'brushMode' | 'transformable' | 'removeOnClick' | 'brushStyle' | 'z' | 'outOfBrushCursor' | 'inBrushCursor'
 > {
     brushType: BrushTypeUncertain;
 }
@@ -153,6 +158,8 @@ const CURSOR_MAP = {
     se: 'nwse'
 } as const;
 const DEFAULT_BRUSH_OPT = {
+    outOfBrushCursor: 'crosshair',
+    inBrushCursor: 'move',
     brushStyle: {
         lineWidth: 2,
         stroke: 'rgba(210,219,238,0.3)',
@@ -600,7 +607,7 @@ function createBaseRectCover(
         style: makeStyle(brushOption),
         silent: true,
         draggable: true,
-        cursor: 'move',
+        cursor: brushOption.inBrushCursor,
         drift: curry(driftRect, rectRangeConverter, controller, cover, ['n', 's', 'w', 'e']),
         ondragend: curry(trigger, controller, {isEnd: true})
     }));
@@ -667,7 +674,7 @@ function updateCommon(controller: BrushController, cover: BrushCover): void {
     mainEl.useStyle(makeStyle(brushOption));
     mainEl.attr({
         silent: !transformable,
-        cursor: transformable ? 'move' : 'default'
+        cursor: transformable ? cover.__brushOption.inBrushCursor : 'default'
     });
 
     each(
@@ -847,7 +854,7 @@ function resetCursor(
         }
     }
 
-    currPanel && zr.setCursorStyle('crosshair');
+    currPanel && zr.setCursorStyle(controller._brushOption.outOfBrushCursor);
 }
 
 function preventDefault(e: ElementEvent): void {
