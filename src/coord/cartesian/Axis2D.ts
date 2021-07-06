@@ -66,6 +66,7 @@ class Axis2D extends Axis {
      */
     grid: Grid;
 
+    private _gridExtent: [number, number];
 
     constructor(
         dim: DimensionName,
@@ -122,6 +123,14 @@ class Axis2D extends Axis {
 
         this.model.option.categorySortInfo = info;
         (this.scale as OrdinalScale).setSortInfo(info);
+    }
+
+    setGridExtent(start: number, end: number) {
+        this._gridExtent = [start, end];
+    }
+
+    getGridExtent(): [number, number] {
+        return this._gridExtent.slice() as [number, number];
     }
 
 }

@@ -32,6 +32,7 @@ import {
     estimateLabelUnionRect,
     getDataDimensionsOnAxis
 } from '../../coord/axisHelper';
+import IntervalScale from '../../scale/Interval';
 import Cartesian2D, {cartesian2DDimensions} from './Cartesian2D';
 import Axis2D from './Axis2D';
 import {ParsedModelFinder, ParsedModelFinderKnown, SINGLE_REFERRING} from '../../util/model';
@@ -47,6 +48,7 @@ import { ScaleDataValue } from '../../util/types';
 import List from '../../data/List';
 import OrdinalScale from '../../scale/Ordinal';
 import { isCartesian2DSeries, findAxisModels } from './cartesianAxisHelper';
+import { round } from '../../util/number';
 
 
 type Cartesian2DDimensionName = 'x' | 'y';
@@ -84,18 +86,75 @@ class Grid implements CoordinateSystemMaster {
         return this._rect;
     }
 
+    calAxisNiceSplitNumber(axes: Axis2D[]): [number[], number] {
+        const splitNumArr: number[] = [];
+        const niceAxisExtents: number[] = [];
+        let maxSplitNumber = 0;
+        each(axes, axis => {
+            niceScaleExtent(axis.scale, axis.model);
+            if (axis.type !== 'value') {
+                return;
+            }
+            const extent = axis.scale.getExtent();
+            const interval = (axis.scale as IntervalScale).getInterval();
+            const splitNumber = round(extent[1] - extent[0]) / interval;
+            splitNumArr.push(splitNumber);
+            maxSplitNumber = (splitNumber > maxSplitNumber) ? splitNumber : maxSplitNumber;
+            const axisExtent = axis.getExtent();
+            niceAxisExtents.push((axisExtent[1] - axisExtent[0]) * interval / extent[1]);
+        });
+
+        return [splitNumArr, maxSplitNumber];
+    }
+
+    resetAxisExtent(axes: Axis2D[], splitNumber: number[], maxSplitNumber: number) {
+        let finalSplitNum: number = 0;
+        each(axes, function (axis, index) {
+            if (axis.type !== 'value') {
+                return;
+            }
+
+            if (!(maxSplitNumber - splitNumber[index])) {
+                finalSplitNum = maxSplitNumber > finalSplitNum ? maxSplitNumber : finalSplitNum;
+                return;
+            };
+
+            const extent = axis.scale.getExtent();
+            const interval = (axis.scale as IntervalScale).getInterval();
+            let splitNum = round(extent[1] - extent[0]) / interval;
+
+            if ((Math.abs(Math.round(splitNum) - splitNum)) < 1e-8) {
+                extent[1] = extent[1] + (maxSplitNumber - splitNumber[index]) * interval;
+                niceScaleExtent(axis.scale, axis.model, extent, maxSplitNumber);
+            }
+            else {
+                const extentRound = round(extent[1] - extent[0]);
+                const preferredInterval = axis.model.get('interval')
+                    || (extentRound - (extentRound % maxSplitNumber)) / maxSplitNumber;
+                (axis.scale as IntervalScale).niceTicks(
+                    maxSplitNumber + 1, null, null,
+                    preferredInterval
+                );
+            }
+            const finalScaleExtent = axis.scale.getExtent();
+            const finalInterval = (axis.scale as IntervalScale).getInterval();
+            splitNum = round(finalScaleExtent[1] - finalScaleExtent[0]) / finalInterval;
+            finalSplitNum = splitNum > finalSplitNum ? splitNum : finalSplitNum;
+        });
+
+        return Math.ceil(finalSplitNum);
+    }
+
     update(ecModel: GlobalModel, api: ExtensionAPI): void {
 
         const axesMap = this._axesMap;
 
         this._updateScale(ecModel, this.model);
 
-        each(axesMap.x, function (xAxis) {
-            niceScaleExtent(xAxis.scale, xAxis.model);
-        });
-        each(axesMap.y, function (yAxis) {
-            niceScaleExtent(yAxis.scale, yAxis.model);
-        });
+        const [niceSplitNumX, maxNiceSplitNumX] = this.calAxisNiceSplitNumber(axesMap.x);
+        const [niceSplitNumY, maxNiceSplitNumY] = this.calAxisNiceSplitNumber(axesMap.y);
+        const finalSplitNumberY = this.resetAxisExtent(axesMap.y, niceSplitNumY, maxNiceSplitNumY);
+        const finalSplitNumberX = this.resetAxisExtent(axesMap.x, niceSplitNumX, maxNiceSplitNumX);
 
         // Key: axisDim_axisIndex, value: boolean, whether onZero target.
         const onZeroRecords = {} as Dictionary<boolean>;
@@ -110,6 +169,28 @@ class Grid implements CoordinateSystemMaster {
         // Resize again if containLabel is enabled
         // FIXME It may cause getting wrong grid size in data processing stage
         this.resize(this.model, api);
+
+        this.adjustValueAxes(axesMap.y, finalSplitNumberY);
+        this.adjustValueAxes(axesMap.x, finalSplitNumberX);
+    }
+
+    adjustValueAxes(axesList: Axis2D[], finalSplitNumber: number) {
+        each(axesList, axis => {
+            const isHorizontal = axis.isHorizontal();
+            const gridExtent = isHorizontal ? this._rect.width : this._rect.height;
+            axis.setGridExtent(0, gridExtent);
+            if (axis.type !== 'value') {
+                return;
+            }
+            const unionExtent = gridExtent / finalSplitNumber;
+            const [extentStart, extentEnd] = axis.scale.getExtent();
+            const [niceExtent] = (axis.scale as IntervalScale).getNiceExtent();
+            const interval = (axis.scale as IntervalScale).getInterval();
+            const offset = niceExtent === extentStart ? extentStart : niceExtent - interval;
+            const start = unionExtent * ((extentStart - offset) / interval);
+            const end = unionExtent * (extentEnd - offset) / interval;
+            axis.setExtent(start, end);
+        });
     }
 
     /**

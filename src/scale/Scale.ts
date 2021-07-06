@@ -162,7 +162,8 @@ abstract class Scale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> 
             fixMin?: boolean,
             fixMax?: boolean,
             minInterval?: number,
-            maxInterval?: number
+            maxInterval?: number,
+            interval?: number
         }
     ): void;
 

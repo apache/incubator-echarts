@@ -64,6 +64,10 @@ class IntervalScale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> e
         }
     }
 
+    getNiceExtent(): number[] {
+        return this._niceExtent.slice();
+    }
+
     unionExtent(other: [number, number]): void {
         const extent = this._extent;
         other[0] < extent[0] && (extent[0] = other[0]);
@@ -215,7 +219,7 @@ class IntervalScale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> e
     /**
      * @param splitNumber By default `5`.
      */
-    niceTicks(splitNumber?: number, minInterval?: number, maxInterval?: number): void {
+    niceTicks(splitNumber?: number, minInterval?: number, maxInterval?: number, preferredInterval?: number): void {
         splitNumber = splitNumber || 5;
         const extent = this._extent;
         let span = extent[1] - extent[0];
@@ -230,7 +234,7 @@ class IntervalScale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> e
         }
 
         const result = helper.intervalScaleNiceTicks(
-            extent, splitNumber, minInterval, maxInterval
+            extent, splitNumber, minInterval, maxInterval, preferredInterval
         );
 
         this._intervalPrecision = result.intervalPrecision;
@@ -243,7 +247,8 @@ class IntervalScale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> e
         fixMin?: boolean,
         fixMax?: boolean,
         minInterval?: number,
-        maxInterval?: number
+        maxInterval?: number,
+        interval?: number
     }): void {
         const extent = this._extent;
         // If extent start and end are same, expand them
@@ -275,7 +280,7 @@ class IntervalScale<SETTING extends Dictionary<unknown> = Dictionary<unknown>> e
             extent[1] = 1;
         }
 
-        this.niceTicks(opt.splitNumber, opt.minInterval, opt.maxInterval);
+        this.niceTicks(opt.splitNumber, opt.minInterval, opt.maxInterval, opt.interval);
 
         // let extent = this._extent;
         const interval = this._interval;

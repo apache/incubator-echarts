@@ -1,0 +1,1270 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/testHelper.js"></script>
+    <link rel="stylesheet" href="lib/reset.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .chart {
+            width: 100vw;
+            height: 50vh;
+        }
+    </style>
+    <div id="main1" class="chart"></div>
+    <div id="main2" class="chart"></div>
+    <div id="main13" class="chart"></div>
+    <div id="main3" class="chart"></div>
+    <div id="main4" class="chart"></div>
+    <div id="main5" class="chart"></div>
+    <div id="main6" class="chart"></div>
+    <div id="main7" class="chart"></div>
+    <div id="main8" class="chart"></div>
+    <div id="main12" class="chart"></div>
+    <div id="main9" class="chart"></div>
+    <div id="main10" class="chart"></div>
+    <div id="main11" class="chart"></div>
+    <div id="main14" class="chart"></div>
+    <div id="main15" class="chart"></div>
+    <div id="main16" class="chart"></div>
+    <div id="main17" class="chart"></div>
+    <div id="main18" class="chart"></div>
+    <div id="main19" class="chart"></div>
+    <div id="main20" class="chart"></div>
+    <div id="main21" class="chart"></div>
+    <div id="main22" class="chart"></div>
+    <div id="main23" class="chart"></div>
+    <div id="main24" class="chart"></div>
+    <div id="main25" class="chart"></div>
+    <div id="main26" class="chart"></div>
+    <div id="main27" class="chart"></div>
+    <div id="main28" class="chart"></div>
+    <script>
+        require([
+            'echarts'
+        ], function (echarts) {
+
+            var option = {
+                tooltip: {},
+                "yAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "xAxis": [
+                    {
+                        "name": "A",
+                    },
+                    {
+                        "name": "B",
+                    }
+                ],
+                "series": [
+                    {
+                        "name": "A",
+                        "type": "bar",
+                        "data": [
+                            998,
+                            101
+                        ],
+                        "xAxisIndex": 0
+                    },
+                    {
+                        "name": "B",
+                        "type": "bar",
+                        "data": [
+                            6,
+                            13
+                        ],
+                        "xAxisIndex": 1
+                    }
+                ]
+            };
+
+            var chart = testHelper.create(echarts, 'main1', {
+                title: [
+                    'Axis auto align',
+                    'Axis X are value axis'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [
+                    {
+                        "name": "A",
+                    },
+                    {
+                        "name": "B",
+                    }
+                ],
+                "series": [
+                    {
+                        "name": "A",
+                        "type": "bar",
+                        "data": [
+                            998,
+                            101
+                        ],
+                        "yAxisIndex": 0
+                    },
+                    {
+                        "name": "B",
+                        "type": "bar",
+                        "data": [
+                            6,
+                            13
+                        ],
+                        "yAxisIndex": 1
+                    }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main2', {
+                title: [
+                    'Axis auto align',
+                    'One value axis has significant bigger value'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [
+                    {
+                        "name": "A",
+                        splitNumber: 7
+                    },
+                    {
+                        "name": "B"
+                    }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        12,
+                        7
+                    ],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main13', {
+                title: [
+                    'Axis auto align',
+                    'One axis has splitNumber'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [
+                    {
+                        "name": "A",
+                        splitNumber: 7
+                    },
+                    {
+                        "name": "B",
+                        splitNumber: 6
+                    }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        12,
+                        7
+                    ],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main3', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have splitNumber'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    interval: 7
+                },
+                {
+                    "name": "B",
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        12,
+                        7
+                    ],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main4', {
+                title: [
+                    'Axis auto align',
+                    'One of axis has interval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    interval: 7
+                },
+                {
+                    "name": "B",
+                    interval: 6
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        12,
+                        7
+                    ],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main5', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have interval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    max: 26,
+                },
+                {
+                    "name": "B"
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        12,
+                        -3
+                    ],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main6', {
+                title: [
+                    'Axis auto align',
+                    'One of axis has max'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [
+                    {
+                        "name": "A",
+                        interval: 5,
+                        max: 22
+                    },
+                    {
+                        "name": "B",
+                        interval: 3,
+                        max: 25
+                    }
+                ],
+                "series": [
+                    {
+                        "name": "A",
+                        "type": "bar",
+                        "data": [
+                            -12,
+                            -3
+                        ],
+                        "yAxisIndex": 1
+                    },
+                    {
+                        "name": "B",
+                        "type": "bar",
+                        "data": [
+                            -6,
+                            -23
+                        ],
+                        "yAxisIndex": 0
+                    }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main7', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have interval and max'
+                ],
+                option: option
+            });
+
+            option = {
+                xAxis: {},
+                yAxis: [
+                    {
+                        "name": "A",
+                        interval: 5,
+                        max: 31,
+                        scale: true
+                    },
+                    {
+                        "name": "B",
+                        interval: 3,
+                        max: 25,
+                        scale: true
+                    }
+                ],
+                series: [
+                    {
+                        symbolSize: 20,
+                        data: [
+                            [20.0, 18.04],
+                            [28.0, 16.95],
+                            [23.0, 17.58],
+                            [19.0, 18.81],
+                            [21.0, 18.33],
+                            [24.0, 19.96],
+                            [16.0, 17.24],
+                            [24.0, 14.26],
+                            [22.0, 20.84],
+                            [17.0, 14.82],
+                            [15.0, 15.68]
+                        ],
+                        type: 'scatter',
+                        yAxisIndex: 0
+                    },
+                    {
+                        symbolSize: 20,
+                        data: [
+                            [11.0, 18.04],
+                            [18.0, 16.95],
+                            [23.0, 17.58],
+                            [19.0, 18.81],
+                            [21.0, 18.33],
+                            [24.0, 19.96],
+                            [16.0, 17.24],
+                            [14.0, 14.26],
+                            [22.0, 20.84],
+                            [17.0, 14.82],
+                            [15.0, 15.68]
+                        ],
+                        type: 'scatter',
+                        yAxisIndex: 1
+                    }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main8', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have scale'
+                ],
+                option: option
+            });
+
+            option = {
+                xAxis: {},
+                yAxis: [
+                    {
+                        "name": "A",
+                        interval: 5,
+                        max: 31
+                    },
+                    {
+                        "name": "B",
+                        interval: 3,
+                        max: 25,
+                        scale: true
+                    }
+                ],
+                series: [
+                    {
+                        symbolSize: 20,
+                        data: [
+                            [20.0, 18.04],
+                            [28.0, 16.95],
+                            [23.0, 17.58],
+                            [19.0, 18.81],
+                            [21.0, 18.33],
+                            [24.0, 19.96],
+                            [16.0, 17.24],
+                            [24.0, 14.26],
+                            [22.0, 20.84],
+                            [17.0, 14.82],
+                            [15.0, 15.68]
+                        ],
+                        type: 'scatter',
+                        yAxisIndex: 0
+                    },
+                    {
+                        symbolSize: 20,
+                        data: [
+                            [11.0, 18.04],
+                            [18.0, 16.95],
+                            [23.0, 17.58],
+                            [19.0, 18.81],
+                            [21.0, 18.33],
+                            [24.0, 19.96],
+                            [16.0, 17.24],
+                            [14.0, 14.26],
+                            [22.0, 20.84],
+                            [17.0, 14.82],
+                            [15.0, 15.68]
+                        ],
+                        type: 'scatter',
+                        yAxisIndex: 1
+                    }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main12', {
+                title: [
+                    'Axis auto align',
+                    'One axis has scale'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    interval: 7,
+                    splitNumber: 3
+                },
+                {
+                    "name": "B",
+                    interval: 6,
+                    splitNumber: 4
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        22,
+                        7
+                    ],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main9', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have splitNumber and interval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2']
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    interval: 7,
+                    splitNumber: 3,
+                    max: 23
+                },
+                {
+                    "name": "B",
+                    interval: 6,
+                    splitNumber: 4,
+                    max: 25
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [
+                        22,
+                        7
+                    ],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [
+                        6,
+                        23
+                    ],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main10', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have splitNumber, interval and max'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    splitNumber: 3,
+                    minInterval: 333
+                },
+                {
+                    "name": "B",
+                    splitNumber: 4,
+                    minInterval: 11
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 390, 330, 220],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main11', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have minInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    minInterval: 333
+                },
+                {
+                    "name": "B"
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 390, 330, 220],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main14', {
+                title: [
+                    'Axis auto align',
+                    'One axis have minInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    maxInterval: 98
+                },
+                {
+                    "name": "B"
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 390, 330, 220],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main15', {
+                title: [
+                    'Axis auto align',
+                    'One axis have maxInterval'
+                ],
+                option: option
+            });
+
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    maxInterval: 98
+                },
+                {
+                    "name": "B",
+                    maxInterval: 7
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 1
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 390, 330, 220],
+                    "yAxisIndex": 0
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main16', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have maxInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3
+                },
+                {
+                    "name": "B"
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 390, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main17', {
+                title: [
+                    'Axis auto align',
+                    'One axis has min option'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3
+                },
+                {
+                    "name": "B",
+                    min: -53
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main18', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min option'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43
+                },
+                {
+                    "name": "B",
+                    min: -53
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main19', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min option, and one has max option'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main20', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    splitNumber: 9
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main21', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, one have splitNumber'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    splitNumber: 9
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511,
+                    splitNumber: 11
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main22', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, both have splitNumber'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    interval: 7
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main23', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, one has interval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    interval: 7
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511,
+                    interval: 111
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main24', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, both have interval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    minInterval: 7
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main25', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, one has minInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    minInterval: 8
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511,
+                    minInterval: 113
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main26', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, both have minInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    maxInterval: 8
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main27', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, one has maxInterval'
+                ],
+                option: option
+            });
+
+            option = {
+                tooltip: {},
+                "xAxis": [{
+                    "data": ["test", 'test2', "test3", 'test4', "test5", 'test6', "test7"]
+                }],
+                "yAxis": [{
+                    "name": "A",
+                    min: 3,
+                    max: 43,
+                    maxInterval: 8
+                },
+                {
+                    "name": "B",
+                    min: -53,
+                    max: 511,
+                    maxInterval: 113
+                }
+                ],
+                "series": [{
+                    "name": "A",
+                    "type": "bar",
+                    "data": [10, 2, 20, 33, 39, 33, 22],
+                    "yAxisIndex": 0
+                },
+                {
+                    "name": "B",
+                    "type": "bar",
+                    "data": [10, 52, 200, 334, 490, 330, 220],
+                    "yAxisIndex": 1
+                }
+                ]
+            };
+
+            chart = testHelper.create(echarts, 'main28', {
+                title: [
+                    'Axis auto align',
+                    'Both axis have min and max option, both have maxInterval'
+                ],
+                option: option
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
