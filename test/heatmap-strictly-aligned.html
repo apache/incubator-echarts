@@ -1,0 +1,182 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="lib/esl.js"></script>
+    <script src="lib/config.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+    <button id="button">strictlyAligned: true</button>
+    <div id="main" style="width: 371px;height:812px;"></div>
+    <script>
+        require([
+            'echarts'
+        ], function (echarts) {
+            var strictlyAligned = true;
+            var chart = echarts.init(document.getElementById('main'));
+
+            var option = {
+                dataset: {
+                    source: [
+                        ["Angular", "2021-03-22", 279],
+                        ["React", "2021-03-22", 1003],
+                        ["Angular", "2021-03-23", 296],
+                        ["Vue", "2021-03-23", 291],
+                        ["React", "2021-03-23", 771],
+                        ["Vue", "2021-03-24", 1267],
+                        ["React", "2021-03-24", 796],
+                        ["Angular", "2021-03-24", 329],
+                        ["Angular", "2021-03-25", 558],
+                        ["Vue", "2021-03-25", 825],
+                        ["React", "2021-03-25", 763],
+                        ["React", "2021-03-26", 365],
+                        ["Vue", "2021-03-26", 422],
+                        ["Angular", "2021-03-26", 104],
+                        ["Angular", "2021-03-27", 134],
+                        ["React", "2021-03-27", 65],
+                        ["Vue", "2021-03-27", 30],
+                        ["React", "2021-03-28", 58],
+                        ["Angular", "2021-03-28", 6],
+                        ["Angular", "2021-03-29", 379],
+                        ["React", "2021-03-29", 559],
+                        ["React", "2021-03-30", 869],
+                        ["Angular", "2021-03-30", 244],
+                        ["Angular", "2021-03-31", 328],
+                        ["React", "2021-03-31", 965],
+                        ["React", "2021-04-01", 878],
+                        ["Angular", "2021-04-01", 203],
+                        ["Angular", "2021-04-02", 128],
+                        ["React", "2021-04-02", 830],
+                        ["React", "2021-04-03", 60],
+                        ["Angular", "2021-04-03", 3],
+                        ["React", "2021-04-04", 93],
+                        ["Angular", "2021-04-04", 4],
+                        ["Angular", "2021-04-05", 1],
+                        ["React", "2021-04-05", 100],
+                        ["React", "2021-04-06", 948],
+                        ["Vue", "2021-04-06", 49],
+                        ["Angular", "2021-04-06", 172],
+                        ["Angular", "2021-04-07", 251],
+                        ["React", "2021-04-07", 916],
+                        ["Vue", "2021-04-07", 894],
+                        ["Vue", "2021-04-08", 928],
+                        ["React", "2021-04-08", 774],
+                        ["Angular", "2021-04-08", 161],
+                        ["React", "2021-04-09", 771],
+                        ["Angular", "2021-04-09", 233],
+                        ["Vue", "2021-04-09", 928],
+                        ["Vue", "2021-04-10", 299],
+                        ["Angular", "2021-04-10", 44],
+                        ["React", "2021-04-10", 490],
+                        ["Angular", "2021-04-11", 8],
+                        ["Vue", "2021-04-11", 75],
+                        ["React", "2021-04-11", 93],
+                        ["Vue", "2021-04-12", 1180],
+                        ["Angular", "2021-04-12", 277],
+                        ["React", "2021-04-12", 963],
+                        ["Angular", "2021-04-13", 274],
+                        ["Vue", "2021-04-13", 1011],
+                        ["React", "2021-04-13", 953],
+                        ["React", "2021-04-14", 938],
+                        ["Vue", "2021-04-14", 1267],
+                        ["Angular", "2021-04-14", 221],
+                        ["Vue", "2021-04-15", 1186],
+                        ["Angular", "2021-04-15", 201],
+                        ["React", "2021-04-15", 820],
+                        ["Vue", "2021-04-16", 1165],
+                        ["React", "2021-04-16", 698],
+                        ["Angular", "2021-04-16", 258],
+                        ["Angular", "2021-04-17", 49],
+                        ["React", "2021-04-17", 451],
+                        ["Vue", "2021-04-17", 214],
+                        ["Angular", "2021-04-18", 3],
+                        ["Vue", "2021-04-18", 30],
+                        ["React", "2021-04-18", 64],
+                        ["React", "2021-04-19", 909],
+                        ["Angular", "2021-04-19", 296],
+                        ["Vue", "2021-04-19", 1298]
+                    ]
+                },
+                xAxis: {
+                    type: "category",
+                },
+                yAxis: {
+                    type: "category",
+                },
+                visualMap: {
+                    max: 1298,
+                    min: 0,
+                    itemWidth: 10,
+                    itemHeight: 100,
+                    calculable: true,
+                    orient: "horizontal",
+                    left: "0",
+                    color: ["#1F6899", "#74BEF0", "#A6DBFF", "#D9F0FF"]
+                },
+                grid: {
+                    left: '95px'
+                },
+                series: [
+                    {
+                        type: "heatmap",
+                        label: {
+                            normal: {
+                                show: true
+                            }
+                        },
+                        strictlyAligned: strictlyAligned,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowColor: "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
+                    }
+                ]
+            };
+            chart.setOption(option);
+
+            const $button = document.getElementById('button');
+            $button.addEventListener('click', () => {
+                strictlyAligned = !strictlyAligned;
+                option.series[0].strictlyAligned = strictlyAligned;
+                $button.innerText = strictlyAligned ?
+                    'strictlyAligned: true' :
+                    'strictlyAligned: false';
+                chart.setOption(option);
+            })
+        });
+
+    </script>
+</body>
+
+</html>

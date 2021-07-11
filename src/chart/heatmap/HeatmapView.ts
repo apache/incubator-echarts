@@ -237,7 +237,12 @@ class HeatmapView extends ChartView {
                 ]);
 
                 rect = new graphic.Rect({
-                    shape: {
+                    shape: seriesModel.option.strictlyAligned ? {
+                        x: point[0] - width / 2,
+                        y: point[1] - height / 2,
+                        width: width,
+                        height: height
+                    } : {
                         x: Math.floor(Math.round(point[0]) - width / 2),
                         y: Math.floor(Math.round(point[1]) - height / 2),
                         width: Math.ceil(width),

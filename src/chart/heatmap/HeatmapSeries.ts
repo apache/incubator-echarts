@@ -52,6 +52,7 @@ export interface HeatmapDataItemOption extends HeatmapStateOption, StatesOptionM
 export interface HeatmapSeriesOption extends SeriesOption<HeatmapStateOption>, HeatmapStateOption,
     SeriesOnCartesianOptionMixin, SeriesOnGeoOptionMixin, SeriesOnCalendarOptionMixin, SeriesEncodeOptionMixin {
     type?: 'heatmap'
+    strictlyAligned?: boolean;
 
     coordinateSystem?: 'cartesian2d' | 'geo' | 'calendar'
 
@@ -112,7 +113,8 @@ class HeatmapSeriesModel extends SeriesModel<HeatmapSeriesOption> {
             itemStyle: {
                 borderColor: '#212121'
             }
-        }
+        },
+        strictlyAligned: false,
     };
 }
 
