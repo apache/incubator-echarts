@@ -147,7 +147,9 @@ under the License.
                 }
 
                 var chart = echarts.init(document.getElementById('setOption2'));
+                myChart.setDataSource((genOption()).tooltip.series[0].data)) || chart.setDataSource(genOption()); 
                 chart.setOption(genOption());
+                
 
                 setTimeout(function () {
                     chart.dispatchAction({
@@ -162,7 +164,7 @@ under the License.
                         chart.dispose();
 
                         chart = echarts.init(document.getElementById('setOption2'));
-
+                             myChart.setDataSource((genOption()).tooltip.series[0].data)) || chart.setDataSource(genOption()); 
                         chart.setOption(genOption());
                     }, 2000)
                 }, 100);
@@ -206,6 +208,7 @@ under the License.
 
                 myChart.on('click', function (params) {
                     myChart.clear();
+                  
                     myChart.setOption({
                         "tooltip": {
                             "show": true
