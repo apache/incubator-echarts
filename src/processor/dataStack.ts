@@ -121,18 +121,13 @@ function calculateStack(stackInfoList: StackInfo[]) {
                     const val = stackInfo.data.getByRawIndex(
                         stackInfo.stackResultDimension, stackedDataRawIndex
                     ) as number;
-
                     // Considering positive stack, negative stack and empty data
-                    if ((sum >= 0 && val > 0) // Positive stack
-                        || (sum <= 0 && val < 0) // Negative stack
-                    ) {
-                        // The sum should be as less as possible to be effected
-                        // by floating arithmetic problem. A wrong result probably
-                        // filtered incorrectly by axis min/max.
-                        sum = addSafe(sum, val);
-                        stackedOver = val;
-                        break;
-                    }
+                    // The sum should be as less as possible to be effected
+                    // by floating arithmetic problem. A wrong result probably
+                    // filtered incorrectly by axis min/max.
+                    sum = addSafe(sum, val);
+                    stackedOver = val;
+                    break;
                 }
             }
 

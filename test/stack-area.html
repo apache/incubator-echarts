@@ -1,0 +1,396 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="lib/simpleRequire.js"></script>
+    <script src="lib/config.js"></script>
+    <script src="lib/facePrint.js"></script>
+</head>
+
+<body>
+    <style>
+        html,
+        body,
+        .main {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div id="main1" class="main"></div>
+    <div id="main2" class="main"></div>
+    <div id="main3" class="main"></div>
+    <div id="main4" class="main"></div>
+    <div id="main5" class="main"></div>
+    <div id="main6" class="main"></div>
+    <script>
+
+        require(['echarts'], function (echarts) {
+
+            var chart = echarts.init(document.getElementById('main1'));
+            option = {
+                xAxis: [
+                    {
+                        type: 'category',
+                        // boundaryGap: false,
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        min: 100
+                    }
+                ],
+                series: [
+                    {
+                        name: 'low',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {
+                        },
+                        data: [-150, 132, 101, 154, 190, 130, 110]
+                    },
+                    {
+                        name: 'up',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {
+                            origin: 'start'
+                        },
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name: 'middle',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {
+                            // origin: 'start'
+                        },
+                        data: [240, 282, 291, 334, 390, 430, 410]
+                    },
+
+                ]
+            };
+            chart.setOption(option);
+
+            chart = echarts.init(document.getElementById('main2'));
+
+
+            option = {
+                title: {
+                    text: '堆叠区域图'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['今日值', 'up', 'low']
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+
+                    }
+                ],
+                series: [
+                    {
+                        name: 'low',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {
+                            color: 'transparent'
+                        },
+                        data: [-150, 132, 101, 154, 190, 130, 110]
+                    },
+                    {
+                        name: 'up',
+                        type: 'line',
+                        stack: '总量',
+                        areaStyle: {
+                            color: '',
+                            origin: 'start'
+                        },
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+
+                ]
+            };
+
+            chart.setOption(option)
+
+
+            chart = echarts.init(document.getElementById('main3'));
+
+            option = {
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'stack',
+                        type: 'line',
+                        stack: 'stack',
+                        data: [3, 1, 2, -1, -3, 1, 3]
+                    },
+                    {
+                        name: 'stack',
+                        type: 'line',
+                        stack: 'stack',
+                        areaStyle: {},
+                        data: [1, 1, 1, 1, 1, 1, 1]
+                    }
+                ]
+            };
+
+            chart.setOption(option)
+
+
+            chart = echarts.init(document.getElementById('main4'));
+
+            option = {
+
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: [1, 2, 3, 4, 5]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        type: 'line',
+                        stack: '1',
+                        data: [110, 120, 120, 101, 115]
+                    },
+                    {
+                        type: 'line',
+                        stack: '1',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: { normal: {} },
+                        data: [134, 200, -20, 181, 143]
+                    }
+                ]
+            };
+            chart.setOption(option)
+
+            chart = echarts.init(document.getElementById('main5'));
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['利润', '支出', '收入']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        max: 500,
+                        type: 'value'
+                    }
+                ],
+                yAxis: [
+                    {
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    }
+                ],
+                series: [
+                    {
+                        name: '支出',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [-120, -132, -101, -134, -190, -230, -210]
+                    },
+                    {
+                        name: '利润',
+                        type: 'bar',
+                        label: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [200, 170, 240, 244, 200, 220, 210]
+                    },
+                    {
+                        name: '收入',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [320, 302, 341, 374, 390, 450, 420]
+                    },
+                ]
+            };
+
+            chart.setOption(option)
+
+            chart = echarts.init(document.getElementById('main6'));
+            option = {
+                legend: {
+                    data: ['利润', '支出', '收入', '预算']
+                },
+                yAxis: [
+                    {
+                        max: 800,
+                        type: 'value'
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    }
+                ],
+                series: [
+                    {
+                        name: '预算',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [-210, -232, -151, -184, -230, -280, -270]
+                    },
+                    {
+                        name: '支出',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [-20, -132, -101, -134, -190, -230, -210]
+                    },
+                    {
+                        name: '利润',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [200, 170, 240, 244, 200, 220, 210]
+                    },
+                    {
+                        name: '收入',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [320, 302, 341, 374, 390, 450, 420]
+                    },
+                ]
+            };
+
+            chart.setOption(option)
+
+
+        });
+
+    </script>
+</body>
+
+</html>
