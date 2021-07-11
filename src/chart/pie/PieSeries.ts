@@ -255,10 +255,11 @@ class PieSeriesModel extends SeriesModel<PieSeriesOption> {
             // Works only position is 'outer' and alignTo is not 'edge'.
             bleedMargin: 10,
             // Distance between text and label line.
-            distanceToLabelLine: 5
+            distanceToLabelLine: 5,
             // formatter: 标签文本格式器，同Tooltip.formatter，不支持异步回调
             // 默认使用全局文本样式，详见TEXTSTYLE
             // distance: 当position为inner时有效，为label位置到圆心的距离与圆半径(环状图为内外半径和)的比例系数
+            verticalAlign: 'middle'
         },
         // Enabled when label.normal.position is 'outer'
         labelLine: {

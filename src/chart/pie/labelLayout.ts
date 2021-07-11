@@ -383,10 +383,6 @@ export default function pieLabelLayout(
         label.y = textY;
         label.rotation = labelRotate;
 
-        label.setStyle({
-            verticalAlign: 'middle'
-        });
-
         // Not sectorShape the inside label
         if (!isLabelInside) {
             const textRect = label.getBoundingRect().clone();
