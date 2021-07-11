@@ -165,6 +165,8 @@ export function dataTransform(
             }
             item.coord = coord;
         }
+    } else if (isArray(item.coord)) {
+        item.value = item.coord[1] as number;
     }
     return item;
 }
