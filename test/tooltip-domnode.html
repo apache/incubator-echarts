@@ -33,6 +33,9 @@ under the License.
     </head>
     <body>
         <div id="main0"></div>
+        <div id="main1"></div>
+        <div id="main2"></div>
+        <div id="main3"></div>
         <script>
             require(['echarts'/*, 'map/js/china' */], function (echarts) {
                 var option;
@@ -69,6 +72,91 @@ under the License.
             });
         </script>
 
+        <script>
+            require(['echarts'], function (echarts) {
+                var option;
+                var tooltipContent = document.createElement('span');
+                tooltipContent.innerText = 'Tooltip formatter is a DOM node (not function callback)';
+
+                option = {
+                    xAxis: {},
+                    yAxis: {},
+                    series: {
+                        type: 'line',
+                        data: [[11, 22], [33, 44], [55, 66]]
+                    },
+                    tooltip: {
+                        formatter: tooltipContent
+                    }
+                };
+
+                var chart = testHelper.create(echarts, 'main1', {
+                    title: [
+                        'Tooltip formatter is DOM node (not function callback)'
+                    ],
+                    option: option
+                });
+            });
+        </script>
+
+        <script>
+            require(['echarts'], function (echarts) {
+                var option;
+                var tooltipContent = document.createElement('a');
+                tooltipContent.href = 'javascript:void(0);';
+                tooltipContent.onclick = () => console.log('test');
+                tooltipContent.textContent = 'Olala';
+
+                option = {
+                    xAxis: {},
+                    yAxis: {},
+                    series: {
+                        type: 'line',
+                        data: [[11, 22], [33, 44], [55, 66]]
+                    },
+                    tooltip: {
+                        position: 'top',
+                        enterable: true,
+                        formatter: [tooltipContent]
+                    }
+                };
+
+                var chart = testHelper.create(echarts, 'main2', {
+                    title: [
+                        'Tooltip should show DOM content instead of the string **[object HTMLSpanElement]**',
+                        'https://github.com/apache/echarts/issues/15307'
+                    ],
+                    option: option
+                });
+            });
+        </script>
+
+        <script>
+            require(['echarts'], function (echarts) {
+                var option;
+
+                option = {
+                    xAxis: {},
+                    yAxis: {},
+                    series: {
+                        type: 'line',
+                        data: [[11, 22], [33, 44], [55, 66]]
+                    },
+                    tooltip: {
+                        position: 'top',
+                        enterable: true,
+                        formatter: []
+                    }
+                };
+
+                var chart = testHelper.create(echarts, 'main3', {
+                    title: [
+                        'Tooltip should show nothing',
+                    ],
+                    option: option
+                });
+            });
+        </script>
 
     </body>
 </html>

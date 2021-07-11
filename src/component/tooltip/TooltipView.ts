@@ -784,7 +784,7 @@ class TooltipView extends ComponentView {
 
         const formatter = tooltipModel.get('formatter');
         positionExpr = positionExpr || tooltipModel.get('position');
-        let html: string | HTMLElement[] = defaultHtml;
+        let html: string | HTMLElement | HTMLElement[] = defaultHtml;
         const nearPoint = this._getNearestPoint(
             [x, y],
             params,
@@ -793,27 +793,32 @@ class TooltipView extends ComponentView {
         );
         const nearPointColor = nearPoint.color;
 
-        if (formatter && zrUtil.isString(formatter)) {
-            const useUTC = tooltipModel.ecModel.get('useUTC');
-            const params0 = zrUtil.isArray(params) ? params[0] : params;
-            const isTimeAxis = params0 && params0.axisType && params0.axisType.indexOf('time') >= 0;
-            html = formatter;
-            if (isTimeAxis) {
-                html = timeFormat(params0.axisValue, html, useUTC);
-            }
-            html = formatUtil.formatTpl(html, params, true);
-        }
-        else if (zrUtil.isFunction(formatter)) {
-            const callback = bind(function (cbTicket: string, html: string | HTMLElement[]) {
-                if (cbTicket === this._ticket) {
-                    tooltipContent.setContent(html, markupStyleCreator, tooltipModel, nearPointColor, positionExpr);
-                    this._updatePosition(
-                        tooltipModel, positionExpr, x, y, tooltipContent, params, el
-                    );
+        if (formatter) {
+            if (zrUtil.isString(formatter)) {
+                const useUTC = tooltipModel.ecModel.get('useUTC');
+                const params0 = zrUtil.isArray(params) ? params[0] : params;
+                const isTimeAxis = params0 && params0.axisType && params0.axisType.indexOf('time') >= 0;
+                html = formatter;
+                if (isTimeAxis) {
+                    html = timeFormat(params0.axisValue, html, useUTC);
                 }
-            }, this);
-            this._ticket = asyncTicket;
-            html = formatter(params, asyncTicket, callback);
+                html = formatUtil.formatTpl(html, params, true);
+            }
+            else if (zrUtil.isFunction(formatter)) {
+                const callback = bind(function (cbTicket: string, html: string | HTMLElement | HTMLElement[]) {
+                    if (cbTicket === this._ticket) {
+                        tooltipContent.setContent(html, markupStyleCreator, tooltipModel, nearPointColor, positionExpr);
+                        this._updatePosition(
+                            tooltipModel, positionExpr, x, y, tooltipContent, params, el
+                        );
+                    }
+                }, this);
+                this._ticket = asyncTicket;
+                html = formatter(params, asyncTicket, callback);
+            }
+            else {
+                html = formatter;
+            }
         }
 
         tooltipContent.setContent(html, markupStyleCreator, tooltipModel, nearPointColor, positionExpr);

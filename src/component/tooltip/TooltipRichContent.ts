@@ -71,7 +71,7 @@ class TooltipRichContent {
      * Set tooltip content
      */
     setContent(
-        content: string | HTMLElement[],
+        content: string | HTMLElement | HTMLElement[],
         markupStyleCreator: TooltipMarkupStyleCreator,
         tooltipModel: Model<TooltipOption>,
         borderColor: ZRColor,
