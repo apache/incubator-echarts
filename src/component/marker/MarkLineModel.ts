@@ -118,7 +118,7 @@ class MarkLineModel extends MarkerModel<MarkLineOption> {
         //symbolRotate: 0,
         symbolOffset: 0,
 
-        precision: 2,
+        // precision: 2,
         tooltip: {
             trigger: 'item'
         },
