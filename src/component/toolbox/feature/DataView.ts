@@ -42,6 +42,8 @@ type DataItem = {
 
 type DataList = (DataItem | number | number[])[];
 
+type CategoryAxisFormatter = (category: string | Date | number) => string | number
+
 interface ChangeDataViewPayload extends Payload {
     newOption: {
         series: SeriesOption[]
@@ -74,7 +76,7 @@ function groupSeries(ecModel: GlobalModel) {
         if (coordSys && (coordSys.type === 'cartesian2d' || coordSys.type === 'polar')) {
             // TODO: TYPE Consider polar? Include polar may increase unecessary bundle size.
             const baseAxis = (coordSys as Cartesian2D).getBaseAxis();
-            if (baseAxis.type === 'category') {
+            if (baseAxis.type === 'category' || baseAxis.type == 'time') {
                 const key = baseAxis.dim + '_' + baseAxis.index;
                 if (!seriesGroupByCategoryAxis[key]) {
                     seriesGroupByCategoryAxis[key] = {
@@ -109,20 +111,33 @@ function groupSeries(ecModel: GlobalModel) {
  * Assemble content of series on cateogory axis
  * @inner
  */
-function assembleSeriesWithCategoryAxis(groups: Dictionary<SeriesGroup>): string {
+function assembleSeriesWithCategoryAxis(groups: Dictionary<SeriesGroup>, categoryAxisFormatter: CategoryAxisFormatter): string {
     const tables: string[] = [];
     zrUtil.each(groups, function (group, key) {
         const categoryAxis = group.categoryAxis;
         const valueAxis = group.valueAxis;
         const valueAxisDim = valueAxis.dim;
 
-        const headers = [' '].concat(zrUtil.map(group.series, function (series) {
+        const headers = [categoryAxis.model.name].concat(zrUtil.map(group.series, function (series) {
             return series.name;
         }));
         // @ts-ignore TODO Polar
-        const columns = [categoryAxis.model.getCategories()];
+        const columns = [...[categoryAxis.model.getCategories()].filter(a => !!a)];
+        const categoryAxisRows: any[] = [];
+
+
         zrUtil.each(group.series, function (series) {
             const rawData = series.getRawData();
+
+            series.getRawData().mapArray(rawData.mapDimension('x'), function (val) {
+                if (typeof categoryAxisFormatter === 'function') {
+                    categoryAxisRows.push(categoryAxisFormatter(val));
+                }
+                else {
+                    categoryAxisRows.push(val);
+                }
+            });
+
             columns.push(series.getRawData().mapArray(rawData.mapDimension(valueAxisDim), function (val) {
                 return val;
             }));
@@ -131,6 +146,10 @@ function assembleSeriesWithCategoryAxis(groups: Dictionary<SeriesGroup>): string
         const lines = [headers.join(ITEM_SPLITER)];
         for (let i = 0; i < columns[0].length; i++) {
             const items = [];
+            if(categoryAxisRows[i]) {
+                items.push(categoryAxisRows[i]);
+            }
+
             for (let j = 0; j < columns.length; j++) {
                 items.push(columns[j][i]);
             }
@@ -162,13 +181,12 @@ function assembleOtherSeries(series: SeriesModel[]) {
     }).join('\n\n' + BLOCK_SPLITER + '\n\n');
 }
 
-function getContentFromModel(ecModel: GlobalModel) {
-
+function getContentFromModel(ecModel: GlobalModel, categoryAxisFormatter: CategoryAxisFormatter) {
     const result = groupSeries(ecModel);
 
     return {
         value: zrUtil.filter([
-                assembleSeriesWithCategoryAxis(result.seriesGroupByCategoryAxis),
+                assembleSeriesWithCategoryAxis(result.seriesGroupByCategoryAxis, categoryAxisFormatter),
                 assembleOtherSeries(result.other)
             ], function (str) {
                 return !!str.replace(/[\n\t\s]/g, '');
@@ -298,6 +316,7 @@ export interface ToolboxDataViewFeatureOption extends ToolboxFeatureOption {
 
     optionToContent?: (option: ECUnitOption) => string | HTMLElement
     contentToOption?: (viewMain: HTMLDivElement, oldOption: ECUnitOption) => ECUnitOption
+    categoryAxisFormatter?: CategoryAxisFormatter
 
     icon?: string
     title?: string
@@ -340,7 +359,9 @@ class DataView extends ToolboxFeature<ToolboxDataViewFeatureOption> {
 
         const optionToContent = model.get('optionToContent');
         const contentToOption = model.get('contentToOption');
-        const result = getContentFromModel(ecModel);
+        const categoryAxisFormatter = model.get('categoryAxisFormatter');
+
+        const result = getContentFromModel(ecModel, categoryAxisFormatter);
         if (typeof optionToContent === 'function') {
             const htmlOrDom = optionToContent(api.getOption());
             if (typeof htmlOrDom === 'string') {
