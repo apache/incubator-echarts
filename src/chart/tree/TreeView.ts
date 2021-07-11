@@ -36,7 +36,7 @@ import ExtensionAPI from '../../core/ExtensionAPI';
 import { TreeNode } from '../../data/Tree';
 import List from '../../data/List';
 import { setStatesStylesFromModel, setStatesFlag, setDefaultStateProxy, HOVER_STATE_BLUR } from '../../util/states';
-import { ECElement } from '../../util/types';
+import { AnimationOption, ECElement } from '../../util/types';
 
 type TreeSymbol = SymbolClz & {
     __edge: graphic.BezierCurve | TreePath
@@ -595,44 +595,21 @@ function drawEdge(
     }
 }
 
-function removeNode(
+function removeNodeEdge(
+    node: TreeNode,
     data: List,
-    dataIndex: number,
-    symbolEl: TreeSymbol,
     group: graphic.Group,
-    seriesModel: TreeSeriesModel
+    seriesModel: TreeSeriesModel,
+    removeAnimationOpt: AnimationOption
 ) {
-    const node = data.tree.getNodeByDataIndex(dataIndex);
     const virtualRoot = data.tree.root;
+    const { source, sourceLayout } = getSourceNode(virtualRoot, node);
 
-    let source = node.parentNode === virtualRoot ? node : node.parentNode || node;
-    // let edgeShape = seriesScope.edgeShape;
-    let sourceLayout;
-    while (sourceLayout = source.getLayout(), sourceLayout == null) {
-        source = source.parentNode === virtualRoot ? source : source.parentNode || source;
+    const symbolEl: TreeSymbol = data.getItemGraphicEl(node.dataIndex) as TreeSymbol;
+
+    if (!symbolEl) {
+        return;
     }
-
-    // Use same duration and easing with update to have more consistent animation.
-    const removeAnimationOpt = {
-        duration: seriesModel.get('animationDurationUpdate') as number,
-        easing: seriesModel.get('animationEasingUpdate')
-    };
-
-    graphic.removeElement(symbolEl, {
-        x: sourceLayout.x + 1,
-        y: sourceLayout.y + 1
-    }, seriesModel, {
-        cb() {
-            group.remove(symbolEl);
-            data.setItemGraphicEl(dataIndex, null);
-        },
-        removeOpt: removeAnimationOpt
-    });
-
-    symbolEl.fadeOut(null, {
-        fadeLabel: true,
-        animation: removeAnimationOpt
-    });
 
     const sourceSymbolEl = data.getItemGraphicEl(source.dataIndex) as TreeSymbol;
     const sourceEdge = sourceSymbolEl.__edge;
@@ -686,6 +663,60 @@ function removeNode(
             });
         }
     }
+}
+
+function getSourceNode(virtualRoot: TreeNode, node: TreeNode): { source: TreeNode, sourceLayout: TreeNodeLayout } {
+    let source = node.parentNode === virtualRoot ? node : node.parentNode || node;
+    let sourceLayout;
+    while (sourceLayout = source.getLayout(), sourceLayout == null) {
+        source = source.parentNode === virtualRoot ? source : source.parentNode || source;
+    }
+    return {
+        source,
+        sourceLayout
+    };
+}
+
+function removeNode(
+    data: List,
+    dataIndex: number,
+    symbolEl: TreeSymbol,
+    group: graphic.Group,
+    seriesModel: TreeSeriesModel
+) {
+    const node = data.tree.getNodeByDataIndex(dataIndex);
+    const virtualRoot = data.tree.root;
+
+    const { sourceLayout } = getSourceNode(virtualRoot, node);
+
+    // Use same duration and easing with update to have more consistent animation.
+    const removeAnimationOpt = {
+        duration: seriesModel.get('animationDurationUpdate') as number,
+        easing: seriesModel.get('animationEasingUpdate')
+    };
+
+    graphic.removeElement(symbolEl, {
+        x: sourceLayout.x + 1,
+        y: sourceLayout.y + 1
+    }, seriesModel, {
+        cb() {
+            group.remove(symbolEl);
+            data.setItemGraphicEl(dataIndex, null);
+        },
+        removeOpt: removeAnimationOpt
+    });
+
+    symbolEl.fadeOut(null, {
+        fadeLabel: true,
+        animation: removeAnimationOpt
+    });
+
+    // remove edge as parent node
+    node.children.forEach(childNode => {
+        removeNodeEdge(childNode, data, group, seriesModel, removeAnimationOpt);
+    });
+    // remove edge as child node
+    removeNodeEdge(node, data, group, seriesModel, removeAnimationOpt);
 }
 
 function getEdgeShape(

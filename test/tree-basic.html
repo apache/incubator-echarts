@@ -114,13 +114,13 @@ under the License.
                 });
 
                 setTimeout(function() {
-                    var newData = echarts.util.clone(data);
-                    newData.children.splice(0, 1);
+                    // replace root node
+                    var newData = [data.children[1]];
                     chart.setOption({
                         series: [{
                             type: 'tree',
                             id: '3',
-                            data: [newData]
+                            data: newData
                         }]
                     }, false);
                 }, 1000);
