@@ -90,7 +90,7 @@ class TooltipRichContent {
             style: {
                 rich: markupStyleCreator.richTextStyles,
                 text: content as string,
-                lineHeight: 22,
+                lineHeight: +textStyleModel.get('lineHeight') || 22,
                 backgroundColor: tooltipModel.get('backgroundColor'),
                 borderRadius: tooltipModel.get('borderRadius'),
                 borderWidth: 1,
@@ -103,10 +103,15 @@ class TooltipRichContent {
                 textShadowBlur: textStyleModel.get('textShadowBlur') || 0,
                 textShadowOffsetX: textStyleModel.get('textShadowOffsetX') || 0,
                 textShadowOffsetY: textStyleModel.get('textShadowOffsetY') || 0,
-                fill: tooltipModel.get(['textStyle', 'color']),
+                fill: textStyleModel.get('color'),
                 padding: getPaddingFromTooltipModel(tooltipModel, 'richText'),
                 verticalAlign: 'top',
-                align: 'left'
+                align: 'left',
+                width: +textStyleModel.get('width') || null,
+                height: +textStyleModel.get('height') || null,
+                overflow: textStyleModel.get('overflow'),
+                ellipsis: textStyleModel.get('ellipsis'),
+                lineOverflow: textStyleModel.get('lineOverflow')
             },
             z: tooltipModel.get('z')
         });

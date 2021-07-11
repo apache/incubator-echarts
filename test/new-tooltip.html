@@ -234,6 +234,10 @@ under the License.
 
             option1 = {
                 tooltip: {
+                    textStyle: {
+                        width: 40,
+                        overflow: 'breakAll',
+                    },
                     renderMode: CURRENT_RENDER_MODE,
                     appendToBody: appendToBody,
                     trigger: 'item',
@@ -246,7 +250,7 @@ under the License.
                     },
                     attachToPoint: false,
                     formatter() {
-                        return '11111'
+                        return 'This is Apache ECharts'
                     }
                     // order: 'legendReverse'
                 },
@@ -337,6 +341,11 @@ under the License.
                 tooltip: {
                     renderMode: CURRENT_RENDER_MODE,
                     trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)',
+                    textStyle: {
+                        width: 40,
+                        overflow: 'truncate'
+                    },
                     appendToBody: appendToBody,
                     // formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
@@ -1908,9 +1917,13 @@ under the License.
                         }
                     },
                     attachToPoint: false,
-                    // formatter() {
-                    //     return '11111'
-                    // }
+                    formatter() {
+                        return 'This is Apache ECharts'
+                    },
+                    textStyle: {
+                        width: 40,
+                        overflow: 'break'
+                    }
                     // order: 'legendReverse'
                 },
                 yAxis: [{
