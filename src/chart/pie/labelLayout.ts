@@ -448,8 +448,13 @@ export default function pieLabelLayout(
             }
             const selectState = label.states.select;
             if (selectState) {
-                selectState.x += label.x;
-                selectState.y += label.y;
+                if (layout.textAlign === 'center') {
+                    selectState.x = label.x;
+                    selectState.y = label.y;
+                } else {
+                    selectState.x += label.x;
+                    selectState.y += label.y;
+                }
             }
         }
         if (labelLine) {
