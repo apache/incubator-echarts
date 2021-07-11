@@ -1065,6 +1065,8 @@ export interface TextCommonOption extends ShadowOptionMixin {
     textShadowColor?: string
     textShadowOffsetX?: number
     textShadowOffsetY?: number
+    
+    overflow?: TextStyleProps['overflow']
 
     tag?: string
 }

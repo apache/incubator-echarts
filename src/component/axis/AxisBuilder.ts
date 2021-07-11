@@ -405,10 +405,11 @@ const builders: Record<'axisLine' | 'axisTickLabel' | 'axisName', AxisElementsBu
 
         const textFont = textStyleModel.getFont();
 
+        const nameWidth = textStyleModel.get('width') as number;
         const truncateOpt = axisModel.get('nameTruncate', true) || {};
         const ellipsis = truncateOpt.ellipsis;
         const maxWidth = retrieve(
-            opt.nameTruncateMaxWidth, truncateOpt.maxWidth, axisNameAvailableWidth
+            opt.nameTruncateMaxWidth, truncateOpt.maxWidth, axisNameAvailableWidth, nameWidth
         );
 
         const textEl = new graphic.Text({
@@ -419,7 +420,7 @@ const builders: Record<'axisLine' | 'axisTickLabel' | 'axisName', AxisElementsBu
             style: createTextStyle(textStyleModel, {
                 text: name,
                 font: textFont,
-                overflow: 'truncate',
+                overflow: textStyleModel.get('overflow') || 'truncate',
                 width: maxWidth,
                 ellipsis,
                 fill: textStyleModel.getTextColor()
