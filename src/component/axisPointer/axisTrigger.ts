@@ -298,7 +298,7 @@ function buildPayloadsBySeries(value: AxisValue, axisInfo: CollectedAxisInfo) {
             if (dist < minDist || (diff >= 0 && minDiff < 0)) {
                 minDist = dist;
                 minDiff = diff;
-                snapToValue = seriesNestestValue;
+                snapToValue = axisInfo.snap ? seriesNestestValue : value;
                 payloadBatch.length = 0;
             }
             each(dataIndices, function (dataIndex) {
