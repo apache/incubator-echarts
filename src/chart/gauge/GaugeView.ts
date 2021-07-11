@@ -32,6 +32,7 @@ import Sausage from '../../util/shape/sausage';
 import {createSymbol} from '../../util/symbol';
 import ZRImage from 'zrender/src/graphic/Image';
 import {extend} from 'zrender/src/core/util';
+import {setCommonECData} from '../../util/innerStore';
 
 type ECSymbol = ReturnType<typeof createSymbol>;
 
@@ -439,6 +440,9 @@ class GaugeView extends ChartView {
                             }
                         }, seriesModel);
                         group.add(progress);
+                        // Add data index and series index for indexing the data by element
+                        // Useful in tooltip
+                        setCommonECData(seriesModel.seriesIndex, data.dataType, idx, progress);
                         progressList[idx] = progress;
                     }
                 })
@@ -471,6 +475,9 @@ class GaugeView extends ChartView {
                             }
                         }, seriesModel);
                         group.add(progress);
+                        // Add data index and series index for indexing the data by element
+                        // Useful in tooltip
+                        setCommonECData(seriesModel.seriesIndex, data.dataType, newIdx, progress);
                         progressList[newIdx] = progress;
                     }
                 })

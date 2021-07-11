@@ -51,4 +51,26 @@ export interface ECData {
         option: ComponentItemTooltipOption<unknown>;
     };
 }
+
 export const getECData = makeInner<ECData, Element>();
+
+export const setCommonECData = (seriesIndex: number, dataType: SeriesDataType, dataIdx: number, el: Element) => {
+    if (el) {
+        const ecData = getECData(el);
+        // Add data index and series index for indexing the data by element
+        // Useful in tooltip
+        ecData.dataIndex = dataIdx;
+        ecData.dataType = dataType;
+        ecData.seriesIndex = seriesIndex;
+
+        // TODO: not store dataIndex on children.
+        if (el.type === 'group') {
+            el.traverse(function (child: Element): void {
+                const childECData = getECData(child);
+                childECData.seriesIndex = seriesIndex;
+                childECData.dataIndex = dataIdx;
+                childECData.dataType = dataType;
+            });
+        }
+    }
+};
