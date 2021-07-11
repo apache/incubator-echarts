@@ -117,7 +117,7 @@ export interface LegendStyleOption {
     symbolRotate?: number | 'inherit'
 }
 
-interface DataItem extends LegendStyleOption {
+export interface DataItem extends LegendStyleOption {
     name?: string
     icon?: string
     textStyle?: LabelOption
