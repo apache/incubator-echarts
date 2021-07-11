@@ -894,7 +894,7 @@ class TooltipView extends ComponentView {
         // Specify tooltip position by string 'top' 'bottom' 'left' 'right' around graphic element
         else if (zrUtil.isString(positionExpr) && el) {
             const pos = calcTooltipPosition(
-                positionExpr, rect, contentSize
+                positionExpr, rect, contentSize, tooltipModel.get('borderWidth'),
             );
             x = pos[0];
             y = pos[1];
@@ -1089,12 +1089,12 @@ function confineTooltipPosition(
 function calcTooltipPosition(
     position: TooltipOption['position'],
     rect: ZRRectLike,
-    contentSize: number[]
+    contentSize: number[],
+    borderWidth: number
 ): [number, number] {
     const domWidth = contentSize[0];
     const domHeight = contentSize[1];
-    const gap = 10;
-    const offset = 5;
+    const offset = Math.max(Math.ceil(Math.sqrt(2 * borderWidth * borderWidth)), 5);
     let x = 0;
     let y = 0;
     const rectWidth = rect.width;
@@ -1106,18 +1106,18 @@ function calcTooltipPosition(
             break;
         case 'top':
             x = rect.x + rectWidth / 2 - domWidth / 2;
-            y = rect.y - domHeight - gap;
+            y = rect.y - domHeight - offset;
             break;
         case 'bottom':
             x = rect.x + rectWidth / 2 - domWidth / 2;
-            y = rect.y + rectHeight + gap;
+            y = rect.y + rectHeight + offset;
             break;
         case 'left':
-            x = rect.x - domWidth - gap - offset;
+            x = rect.x - domWidth - offset;
             y = rect.y + rectHeight / 2 - domHeight / 2;
             break;
         case 'right':
-            x = rect.x + rectWidth + gap + offset;
+            x = rect.x + rectWidth + offset;
             y = rect.y + rectHeight / 2 - domHeight / 2;
     }
     return [x, y];
