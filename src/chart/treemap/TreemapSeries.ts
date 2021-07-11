@@ -76,7 +76,12 @@ interface TreePathInfo {
 }
 
 interface TreemapSeriesCallbackDataParams extends CallbackDataParams {
+    /**
+     * @deprecated
+     */
     treePathInfo?: TreePathInfo[]
+
+    treeAncestors?: TreePathInfo[]
 }
 
 interface ExtraStateOption {
@@ -412,7 +417,9 @@ class TreemapSeriesModel extends SeriesModel<TreemapSeriesOption> {
         const params = super.getDataParams.apply(this, arguments as any) as TreemapSeriesCallbackDataParams;
 
         const node = this.getData().tree.getNodeByDataIndex(dataIndex);
-        params.treePathInfo = wrapTreePathInfo(node, this);
+        params.treeAncestors = wrapTreePathInfo(node, this);
+        // compatitable the previous code.
+        params.treePathInfo = params.treeAncestors;
 
         return params;
     }
