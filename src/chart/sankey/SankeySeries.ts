@@ -33,7 +33,8 @@ import {
     OptionDataItemObject,
     GraphEdgeItemObject,
     OptionDataValueNumeric,
-    DefaultEmphasisFocus
+    DefaultEmphasisFocus,
+    ColorByMixin
 } from '../../util/types';
 import GlobalModel from '../../model/Global';
 import List from '../../data/List';
@@ -93,6 +94,7 @@ export interface SankeyLevelOption extends SankeyNodeStateOption, SankeyEdgeStat
 
 export interface SankeySeriesOption
     extends SeriesOption<SankeyBothStateOption, ExtraStateOption>, SankeyBothStateOption,
+    ColorByMixin,
     BoxLayoutOptionMixin {
     type?: 'sankey'
 

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="lib/simpleRequire.js"></script>
+        <script src="lib/config.js"></script>
+        <script src="lib/jquery.min.js"></script>
+        <script src="lib/facePrint.js"></script>
+        <script src="lib/testHelper.js"></script>
+        <!-- <script src="ut/lib/canteen.js"></script> -->
+        <link rel="stylesheet" href="lib/reset.css" />
+    </head>
+    <body>
+        <style>
+        </style>
+
+
+
+        <div id="main0"></div>
+
+
+        <div id="main1"></div>
+
+
+        <div id="main2"></div>
+
+
+        <div id="main3"></div>
+
+
+        <div id="main4"></div>
+
+
+
+
+
+
+
+
+
+        <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [120, 200, 150, 80, 70, 110, {value: 130, colorBy: 'seriesId'}],
+                    type: 'bar',
+                    colorBy: 'item'
+                }]
+            };
+
+            var chart = testHelper.create(echarts, 'main0', {
+                title: [
+                    'Bar'
+                ],
+                option: option
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+        </script>
+
+
+<!--
+
+
+
+
+
+        <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option = {
+                xAxis: {},
+                yAxis: {},
+                series: {
+                    type: 'line',
+                    data: [[11, 22], [33, 44]]
+                }
+            };
+
+            var chart = testHelper.create(echarts, 'main1', {
+                title: [
+                    'Test Case Description of main1',
+                    '(Muliple lines and **emphasis** are supported in description)'
+                ],
+                option: option
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+        </script>
+
+
+
+
+
+
+
+
+        <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option = {
+                xAxis: {},
+                yAxis: {},
+                series: {
+                    type: 'line',
+                    data: [[11, 22], [33, 44]]
+                }
+            };
+
+            var chart = testHelper.create(echarts, 'main2', {
+                title: [
+                    'Test Case Description of main2',
+                    '(Muliple lines and **emphasis** are supported in description)'
+                ],
+                option: option
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+        </script>
+
+
+
+
+
+
+
+
+        <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option = {
+                xAxis: {},
+                yAxis: {},
+                series: {
+                    type: 'line',
+                    data: [[11, 22], [33, 44]]
+                }
+            };
+
+            var chart = testHelper.create(echarts, 'main3', {
+                title: [
+                    'Test Case Description of main3',
+                    '(Muliple lines and **emphasis** are supported in description)'
+                ],
+                option: option
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+        </script>
+
+
+
+
+
+
+
+
+        <script>
+        require(['echarts'/*, 'map/js/china' */], function (echarts) {
+            var option;
+            // $.getJSON('./data/nutrients.json', function (data) {});
+
+            option = {
+                xAxis: {},
+                yAxis: {},
+                series: {
+                    type: 'line',
+                    data: [[11, 22], [33, 44]]
+                }
+            };
+
+            var chart = testHelper.create(echarts, 'main4', {
+                title: [
+                    'Test Case Description of main4',
+                    '(Muliple lines and **emphasis** are supported in description)'
+                ],
+                option: option
+                // height: 300,
+                // buttons: [{text: 'btn-txt', onclick: function () {}}],
+                // recordCanvas: true,
+            });
+        });
+        </script> -->
+
+
+    </body>
+</html>
+

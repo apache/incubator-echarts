@@ -274,6 +274,22 @@ export class TreeNode {
     }
 
     /**
+     * index in parent's children
+     */
+    getChildIndex(): number {
+        if (this.parentNode) {
+            const children = this.parentNode.children;
+            for (let i = 0; i < children.length; ++i) {
+                if (children[i] === this) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        return -1;
+    }
+
+    /**
      * if this is an ancestor of another node
      *
      * @param node another node

@@ -18,7 +18,8 @@
 */
 
 import { isFunction, extend, createHashMap } from 'zrender/src/core/util';
-import { StageHandler, CallbackDataParams, ZRColor, Dictionary, InnerDecalObject } from '../util/types';
+import { StageHandler, CallbackDataParams, ZRColor, Dictionary, InnerDecalObject, SeriesOption, ColorByMixin }
+    from '../util/types';
 import makeStyleMapper from '../model/mixin/makeStyleMapper';
 import { ITEM_STYLE_KEY_MAP } from '../model/mixin/itemStyle';
 import { LINE_STYLE_KEY_MAP } from '../model/mixin/lineStyle';
@@ -179,21 +180,24 @@ const dataColorPaletteTask: StageHandler = {
         // Each type of series use one scope.
         // Pie and funnel are using diferrent scopes
         const paletteScopeGroupByType = createHashMap<object>();
-        ecModel.eachSeries(function (seriesModel) {
-            if (!seriesModel.useColorPaletteOnData) {
+        ecModel.eachSeries((seriesModel: SeriesModel<SeriesOption & ColorByMixin>) => {
+            const colorBy = seriesModel.getColorBy();
+            if (colorBy === 'series') {
                 return;
             }
-            let colorScope = paletteScopeGroupByType.get(seriesModel.type);
+            const key = seriesModel.type + '-' + colorBy;
+            let colorScope = paletteScopeGroupByType.get(key);
             if (!colorScope) {
                 colorScope = {};
-                paletteScopeGroupByType.set(seriesModel.type, colorScope);
+                paletteScopeGroupByType.set(key, colorScope);
             }
             inner(seriesModel).scope = colorScope;
         });
 
 
-        ecModel.eachSeries(function (seriesModel) {
-            if (!seriesModel.useColorPaletteOnData || ecModel.isSeriesFiltered(seriesModel)) {
+        ecModel.eachSeries((seriesModel: SeriesModel<SeriesOption & ColorByMixin>) => {
+            const colorBy = seriesModel.getColorBy();
+            if (colorBy === 'series') {
                 return;
             }
 

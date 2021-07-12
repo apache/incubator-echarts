@@ -32,7 +32,8 @@ import {
     StatesOptionMixin,
     OptionEncodeValue,
     Dictionary,
-    OptionEncode
+    OptionEncode,
+    ColorByMixin
  } from '../../util/types';
 import GlobalModel from '../../model/Global';
 import List from '../../data/List';
@@ -53,6 +54,7 @@ export interface ParallelSeriesDataItemOption extends ParallelStateOption, State
 
 export interface ParallelSeriesOption extends
     SeriesOption<ParallelStateOption>, ParallelStateOption,
+    ColorByMixin,
     SeriesEncodeOptionMixin {
 
     type?: 'parallel';

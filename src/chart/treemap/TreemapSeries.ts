@@ -36,7 +36,8 @@ import {
     DecalObject,
     SeriesLabelOption,
     DefaultEmphasisFocus,
-    AriaOptionMixin
+    AriaOptionMixin,
+    ColorBy
 } from '../../util/types';
 import GlobalModel from '../../model/Global';
 import { LayoutRect } from '../../util/layout';
@@ -97,6 +98,9 @@ export interface TreemapSeriesVisualOption {
      */
     visualDimension?: number | string
 
+    /**
+     * @deprecated Use colorBy instead
+     */
     colorMappingBy?: 'value' | 'index' | 'id'
 
     visualMin?: number
@@ -140,7 +144,8 @@ export interface TreemapSeriesNodeItemOption extends TreemapSeriesVisualOption,
 }
 
 export interface TreemapSeriesOption
-    extends SeriesOption<TreemapStateOption, ExtraStateOption>, TreemapStateOption,
+    extends SeriesOption<TreemapStateOption, ExtraStateOption>,
+    TreemapStateOption,
     BoxLayoutOptionMixin,
     RoamOptionMixin,
     TreemapSeriesVisualOption {

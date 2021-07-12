@@ -43,7 +43,8 @@ import {
     GraphEdgeItemObject,
     OptionDataValueNumeric,
     CallbackDataParams,
-    DefaultEmphasisFocus
+    DefaultEmphasisFocus,
+    ColorByMixin
 } from '../../util/types';
 import SeriesModel from '../../model/Series';
 import Graph from '../../data/Graph';
@@ -137,6 +138,7 @@ export interface GraphCategoryItemOption extends SymbolOptionMixin,
 }
 
 export interface GraphSeriesOption extends SeriesOption,
+    ColorByMixin,
     SeriesOnCartesianOptionMixin, SeriesOnPolarOptionMixin, SeriesOnCalendarOptionMixin,
     SeriesOnGeoOptionMixin, SeriesOnSingleOptionMixin,
     SymbolOptionMixin<CallbackDataParams>,

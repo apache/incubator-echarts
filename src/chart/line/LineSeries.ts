@@ -34,7 +34,8 @@ import {
     StatesOptionMixin,
     SeriesEncodeOptionMixin,
     CallbackDataParams,
-    DefaultEmphasisFocus
+    DefaultEmphasisFocus,
+    ColorByMixin
 } from '../../util/types';
 import List from '../../data/List';
 import type Cartesian2D from '../../coord/cartesian/Cartesian2D';
@@ -82,6 +83,7 @@ export interface LineSeriesOption extends SeriesOption<LineStateOption, ExtraSta
         areaStyle?: AreaStyleOption
     }
 }>, LineStateOption,
+    ColorByMixin,
     SeriesOnCartesianOptionMixin,
     SeriesOnPolarOptionMixin,
     SeriesStackOptionMixin,

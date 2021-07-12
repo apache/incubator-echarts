@@ -17,12 +17,18 @@
 * under the License.
 */
 
+import { lift } from 'zrender/src/tool/color';
+import { extend, map } from 'zrender/src/core/util';
 import GlobalModel from '../../model/Global';
 import SunburstSeriesModel, { SunburstSeriesNodeItemOption } from './SunburstSeries';
-import { extend } from 'zrender/src/core/util';
-import { Dictionary, ColorString } from '../../util/types';
+import { Dictionary, ColorString, ZRColor } from '../../util/types';
+import { setItemVisualFromData } from '../../visual/helper';
 import { TreeNode } from '../../data/Tree';
-import { lift } from 'zrender/src/tool/color';
+
+type ParentColorMap = {
+    node: TreeNode,
+    parentColor: ZRColor
+};
 
 export default function sunburstVisual(ecModel: GlobalModel) {
 
@@ -58,5 +64,78 @@ export default function sunburstVisual(ecModel: GlobalModel) {
             const existsStyle = data.ensureUniqueItemVisual(node.dataIndex, 'style');
             extend(existsStyle, style);
         });
+
+        // TODO: This following code is for sunburst color mapping on levels and items,
+        // which is not ready for release untill we decide what to do with treemap similarly.
+        // if (!tree.root.children || tree.root.children.length === 0) {
+        //     return;
+        // }
+
+        // const levels = seriesModel.get('levels');
+        // const level0Color = levels.length > 1 && levels[0].itemStyle && levels[0].itemStyle.color || '#ccc';
+        // setItemVisualFromData(data, 0, 'color', level0Color);
+
+        // let nodeMapList: ParentColorMap[] = map(tree.root.children, node => {
+        //     return {
+        //         node,
+        //         parentColor: level0Color
+        //     };
+        // }) ;
+        // while (nodeMapList.length) {
+        //     const nodeMap = nodeMapList.shift();
+        //     const node = nodeMap.node;
+        //     const model = node.getModel<SunburstSeriesNodeItemOption>();
+        //     const style = model.getModel('itemStyle').getItemStyle();
+        //     let color: ZRColor;
+
+        //     if (!style.fill) {
+        //         switch (model.get('colorBy')) {
+        //             case 'id':
+        //                 color = seriesModel.getColorFromPalette(node.getId(), paletteScope);
+        //                 break;
+
+        //             case 'dataIndex':
+        //                 color = seriesModel.getColorFromPalette(node.dataIndex + '', paletteScope);
+        //                 break;
+
+        //             case 'name':
+        //                 color = seriesModel.getColorFromPalette(node.name || (node.dataIndex + ''), paletteScope);
+        //                 break;
+
+        //             case 'childIndex':
+        //                 color = seriesModel.getColorFromPalette(node.getChildIndex() + '', paletteScope);
+        //                 break;
+
+        //             case 'lighter':
+        //                 if (typeof nodeMap.parentColor === 'string') {
+        //                     color = lift(nodeMap.parentColor, (node.depth - 1) / (tree.root.height - 1) * 0.5);
+        //                     break;
+        //                 }
+        //                 // Else, gradient or pattern, use 'inherit'
+        //                 // No "break;" here
+        //                 // TODO: support gradient in lift
+
+        //             case 'inherit':
+        //             default:
+        //                 color = nodeMap.parentColor || seriesModel.getColorFromPalette('0', paletteScope);
+        //                 break;
+        //         }
+        //     }
+        //     else {
+        //         color = style.fill;
+        //     }
+
+        //     const existsStyle = data.ensureUniqueItemVisual(node.dataIndex, 'style');
+        //     extend(existsStyle, style);
+
+        //     setItemVisualFromData(data, node.dataIndex, 'color', color);
+
+        //     nodeMapList = map(node.children, node => {
+        //         return {
+        //             node,
+        //             parentColor: color
+        //         };
+        //     }).concat(nodeMapList);
+        // }
     });
 }

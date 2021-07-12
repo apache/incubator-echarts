@@ -30,7 +30,8 @@ import {
     CallbackDataParams,
     StatesOptionMixin,
     OptionDataItemObject,
-    DefaultEmphasisFocus
+    DefaultEmphasisFocus,
+    SunburstColorByMixin
 } from '../../util/types';
 import GlobalModel from '../../model/Global';
 import List from '../../data/List';
@@ -105,6 +106,7 @@ interface SortParam {
 }
 export interface SunburstSeriesOption extends
     SeriesOption<SunburstStateOption, ExtraStateOption>, SunburstStateOption,
+    SunburstColorByMixin,
     CircleLayoutOptionMixin {
 
     type?: 'sunburst'
@@ -254,8 +256,6 @@ class SunburstSeriesModel extends SeriesModel<SunburstSeriesOption> {
         animationDurationUpdate: 500,
 
         data: [],
-
-        levels: [],
 
         /**
          * Sort order.
