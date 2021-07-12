@@ -980,7 +980,8 @@ function updateStyle(
         }
     );
 
-    if (isPolar) {
+    const label = el.getTextContent();
+    if (isPolar && label) {
         const position = itemModel.get(['label', 'position']);
         el.textConfig.inside = position === 'middle' ? true : null;
         setSectorTextRotation(
@@ -991,7 +992,6 @@ function updateStyle(
         );
     }
 
-    const label = el.getTextContent();
     setLabelValueAnimation(
         label,
         labelStatesModels,

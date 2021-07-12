@@ -39,7 +39,7 @@ export type PolarBarLabelPosition = SeriesLabelOption['position']
     | 'start' | 'insideStart' | 'middle' | 'end' | 'insideEnd';
 
 export type BarSeriesLabelOption = Omit<SeriesLabelOption, 'position'>
-    & {position: PolarBarLabelPosition | 'outside'};
+    & {position?: PolarBarLabelPosition | 'outside'};
 
 export interface BarStateOption {
     itemStyle?: BarItemStyleOption
